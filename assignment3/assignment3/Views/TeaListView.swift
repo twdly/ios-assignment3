@@ -22,7 +22,11 @@ struct TeaListView: View {
                 if !teaDb.getBy(type: teaType).isEmpty {
                     Section(header: Text(teaType.rawValue)) {
                         ForEach(teaDb.getBy(type: teaType)) { tea in
-                            Text(tea.name)
+                            NavigationLink {
+                                TimerView(tea: tea)
+                            } label: {
+                                Text(tea.name)
+                            }
                         }
                     }
                 }

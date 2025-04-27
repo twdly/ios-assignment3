@@ -7,7 +7,7 @@
 
 import Foundation
 
-class TeaModel: Identifiable, Codable {
+class TeaModel: Identifiable, Codable, ObservableObject {
     let id: Int
     let name: String
     let type: TeaType
