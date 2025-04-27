@@ -18,38 +18,10 @@ struct TeaListView: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                if !blackTeas.isEmpty {
-                    Section(header: Text("Black teas")) {
-                        ForEach(blackTeas) { tea in
-                            Text(tea.name)
-                        }
-                    }
-                }
-                if !greenTeas.isEmpty {
-                    Section(header: Text("Green teas")) {
-                        ForEach(greenTeas) { tea in
-                            Text(tea.name)
-                        }
-                    }
-                }
-                if !oolongTeas.isEmpty {
-                    Section(header: Text("Oolong teas")) {
-                        ForEach(oolongTeas) { tea in
-                            Text(tea.name)
-                        }
-                    }
-                }
-                if !whiteTeas.isEmpty {
-                    Section(header: Text("White teas")) {
-                        ForEach(whiteTeas) { tea in
-                            Text(tea.name)
-                        }
-                    }
-                }
-                if !otherTeas.isEmpty {
-                    Section(header: Text("Other")) {
-                        ForEach(otherTeas) { tea in
+            List(TeaType.allCases, id: \.hashValue) { teaType in
+                if !teaDb.getBy(type: teaType).isEmpty {
+                    Section(header: Text(teaType.rawValue)) {
+                        ForEach(teaDb.getBy(type: teaType)) { tea in
                             Text(tea.name)
                         }
                     }
