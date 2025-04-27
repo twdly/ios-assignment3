@@ -14,7 +14,7 @@ struct TeaListView: View {
         NavigationStack {
             List(TeaType.allCases, id: \.hashValue) { teaType in
                 if !teaDb.getBy(type: teaType).isEmpty {
-                    Section(header: Text(teaType.rawValue)) {
+                    Section(header: Text("\(teaType.rawValue) teas")) {
                         ForEach(teaDb.getBy(type: teaType)) { tea in
                             NavigationLink {
                                 TimerView(tea: tea)
