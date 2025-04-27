@@ -8,11 +8,33 @@
 import SwiftUI
 
 struct TeaListView: View {
+    @EnvironmentObject var teaDb: TeaDb
+    
     var body: some View {
-        Text("Teas")
+        NavigationStack {
+            List(TeaType.allCases, id: \.hashValue) { teaType in
+                if !teaDb.getBy(type: teaType).isEmpty {
+                    Section(header: Text("\(teaType.rawValue) teas")) {
+                        ForEach(teaDb.getBy(type: teaType)) { tea in
+                            NavigationLink {
+                                TimerView(tea: tea)
+                            } label: {
+                                Text(tea.name)
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("My teas")
+            .overlay(content: {
+                if teaDb.teas.count == 0 {
+                    Text("No teas could be found")
+                }
+            })
+        }
     }
 }
 
 #Preview {
-    TeaListView()
+    TeaListView().environmentObject(TeaDb())
 }

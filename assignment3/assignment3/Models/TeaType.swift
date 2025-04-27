@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum TeaType: Codable {
+enum TeaType: String, Codable, CaseIterable {
     case black
     case green
     case white
