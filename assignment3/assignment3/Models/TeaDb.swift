@@ -9,4 +9,8 @@ import Foundation
 
 class TeaDb: ObservableObject {
     var teas: [TeaModel] = []
+    
+    func getBy(type: TeaType) -> [TeaModel] {
+        return teas.filter({$0.type == type})
+    }
 }
