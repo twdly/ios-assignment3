@@ -10,12 +10,6 @@ import SwiftUI
 struct TeaListView: View {
     @EnvironmentObject var teaDb: TeaDb
     
-    @State var blackTeas: [TeaModel] = []
-    @State var greenTeas: [TeaModel] = []
-    @State var oolongTeas: [TeaModel] = []
-    @State var whiteTeas: [TeaModel] = []
-    @State var otherTeas: [TeaModel] = []
-    
     var body: some View {
         NavigationStack {
             List(TeaType.allCases, id: \.hashValue) { teaType in
@@ -37,15 +31,7 @@ struct TeaListView: View {
                     Text("No teas could be found")
                 }
             })
-        }.onAppear(perform: initialiseLists)
-    }
-    
-    func initialiseLists() {
-        blackTeas = teaDb.getBy(type: .black)
-        greenTeas = teaDb.getBy(type: .green)
-        oolongTeas = teaDb.getBy(type: .oolong)
-        whiteTeas = teaDb.getBy(type: .white)
-        otherTeas = teaDb.getBy(type: .other)
+        }
     }
 }
 
