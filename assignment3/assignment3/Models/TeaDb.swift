@@ -7,6 +7,6 @@
 
 import Foundation
 
-class TeaDb {
+class TeaDb: ObservableObject {
     var teas: [TeaModel] = []
 }

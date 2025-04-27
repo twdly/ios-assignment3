@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var selectedTab: Tabs = .teas
+    @StateObject private var teaDb: TeaDb = TeaDb()
     
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -24,7 +25,7 @@ struct ContentView: View {
             Tab("Reviews", systemImage: "star", value: .reviews) {
                 ReviewView()
             }
-        }
+        }.environmentObject(teaDb)
     }
 }
 
