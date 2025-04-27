@@ -14,13 +14,15 @@ class TeaModel: Identifiable, Codable {
     let waterAmount: Int
     let waterTemp: Int
     let time: Int
+    let url: String?
     
-    init(id: Int, name: String, type: TeaType, waterAmount: Int, waterTemp: Int, time: Int) {
+    init(id: Int, name: String, type: TeaType, waterAmount: Int, waterTemp: Int, time: Int, url: String?) {
         self.id = id
         self.name = name
         self.type = type
         self.waterAmount = waterAmount
         self.waterTemp = waterTemp
         self.time = time
+        self.url = url
     }
 }
