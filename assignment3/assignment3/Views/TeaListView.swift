@@ -19,23 +19,49 @@ struct TeaListView: View {
     var body: some View {
         NavigationStack {
             List {
-                Section(header: Text("Black teas")) {
-                    
+                if !blackTeas.isEmpty {
+                    Section(header: Text("Black teas")) {
+                        ForEach(blackTeas) { tea in
+                            Text(tea.name)
+                        }
+                    }
                 }
-                Section(header: Text("Green teas")) {
-                    
+                if !greenTeas.isEmpty {
+                    Section(header: Text("Green teas")) {
+                        ForEach(greenTeas) { tea in
+                            Text(tea.name)
+                        }
+                    }
                 }
-                Section(header: Text("Oolong teas")) {
-                    
+                if !oolongTeas.isEmpty {
+                    Section(header: Text("Oolong teas")) {
+                        ForEach(oolongTeas) { tea in
+                            Text(tea.name)
+                        }
+                    }
                 }
-                Section(header: Text("White teas")) {
-                    
+                if !whiteTeas.isEmpty {
+                    Section(header: Text("White teas")) {
+                        ForEach(whiteTeas) { tea in
+                            Text(tea.name)
+                        }
+                    }
                 }
-                Section(header: Text("Other")) {
-                    
+                if !otherTeas.isEmpty {
+                    Section(header: Text("Other")) {
+                        ForEach(otherTeas) { tea in
+                            Text(tea.name)
+                        }
+                    }
                 }
             }
-        }.navigationTitle(Text("My teas")).onAppear(perform: initialiseLists)
+            .navigationTitle("My teas")
+            .overlay(content: {
+                if teaDb.teas.count == 0 {
+                    Text("No teas could be found")
+                }
+            })
+        }.onAppear(perform: initialiseLists)
     }
     
     func initialiseLists() {
