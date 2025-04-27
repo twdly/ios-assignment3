@@ -10,7 +10,15 @@ import SwiftUI
 struct TimerView: View {
     @StateObject var tea: TeaModel
     var body: some View {
-        Text(tea.name)
+        VStack {
+            Text(tea.name).font(.title)
+            Spacer()
+            Text("Water temp: \(tea.waterTemp) ºC")
+            Text("Water amount: \(tea.waterAmount) mL")
+            Text("Time: \(tea.time) seconds")
+            Spacer()
+        }
+
     }
 }
 
