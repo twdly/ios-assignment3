@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct TimerView: View {
     @EnvironmentObject var teaDb: TeaDb
@@ -46,6 +47,7 @@ struct TimerView: View {
         timer = Timer.publish(every: 1, on: .main, in: .common)
         _ = timer?.connect()
         timerMessage = "Steeping"
+        schedulateNotification()
     }
     
     func onTimer() {
@@ -77,6 +79,19 @@ struct TimerView: View {
         timer = Timer.publish(every: 1, on: .main, in: .common)
         _ = timer?.connect()
         timerMessage = "Steeping"
+    }
+    
+    func schedulateNotification() {
+        let notifContent = UNMutableNotificationContent()
+        notifContent.title = "Tea time!"
+        notifContent.body = "Your \(tea.name) is ready!"
+        notifContent.sound = .defaultRingtone
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(tea.time), repeats: false)
+        
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: notifContent, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request)
     }
 }
 
