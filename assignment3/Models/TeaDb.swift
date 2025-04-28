@@ -9,6 +9,7 @@ import Foundation
 
 class TeaDb: ObservableObject {
     var teas: [TeaModel] = getTeas()
+    var timerDict: [Int: Date] = [:]
     
     func getBy(type: TeaType) -> [TeaModel] {
         return teas.filter({$0.type == type})

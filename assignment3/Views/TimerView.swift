@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct TimerView: View {
+    @EnvironmentObject var teaDb: TeaDb
+    
     @StateObject var tea: TeaModel
     
     @State var remainingTime: Int = -1
@@ -34,11 +36,13 @@ struct TimerView: View {
             Text(timerMessage)
             Spacer()
         }.onReceive(timer ?? Timer.publish(every: 1, on: .main, in: .common), perform: {_ in onTimer()})
+            .onAppear(perform: initialiseTimer)
     }
     
     func beginTimer() {
         remainingTime = tea.time
         showTimer = true
+        teaDb.timerDict[tea.id] = Date() // Initialise the dictionary with the current time so this view can be reinitialised if the user leaves
         timer = Timer.publish(every: 1, on: .main, in: .common)
         _ = timer?.connect()
         timerMessage = "Steeping"
@@ -54,8 +58,20 @@ struct TimerView: View {
             self.timer?.connect().cancel()
         }
     }
+    
+    func initialiseTimer() {
+        guard let startTime = teaDb.timerDict[tea.id] else {
+            // This timer is not currently running, do nothing
+            return
+        }
+        remainingTime = tea.time - Int(Date().timeIntervalSince(startTime))
+        showTimer = true
+        timer = Timer.publish(every: 1, on: .main, in: .common)
+        _ = timer?.connect()
+        timerMessage = "Steeping"
+    }
 }
 
 #Preview {
-    TimerView(tea: TeaDb().teas[4])
+    TimerView(tea: TeaDb().teas[4]).environmentObject(TeaDb())
 }
