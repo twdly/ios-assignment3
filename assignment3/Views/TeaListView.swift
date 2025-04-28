@@ -25,7 +25,7 @@ struct TeaListView: View {
                     }
                 }
             }
-            .navigationTitle("My teas")
+            .navigationTitle("My Teas")
             .overlay(content: {
                 if teaDb.teas.count == 0 {
                     Text("No teas could be found")
