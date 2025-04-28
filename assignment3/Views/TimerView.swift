@@ -64,7 +64,15 @@ struct TimerView: View {
             // This timer is not currently running, do nothing
             return
         }
-        remainingTime = tea.time - Int(Date().timeIntervalSince(startTime))
+        
+        let newTime = tea.time - Int(Date().timeIntervalSince(startTime))
+        guard newTime > 0 else {
+            // Time has expired and is no longer needed
+            teaDb.timerDict.removeValue(forKey: tea.id)
+            return
+        }
+        
+        remainingTime = newTime
         showTimer = true
         timer = Timer.publish(every: 1, on: .main, in: .common)
         _ = timer?.connect()
