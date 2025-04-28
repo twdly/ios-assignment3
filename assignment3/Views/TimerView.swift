@@ -13,8 +13,7 @@ struct TimerView: View {
     @State var remainingTime: Int = -1
     @State var showTimer: Bool = false
     @State var timerMessage = ""
-    
-    let timer = Timer.publish(every: 1, on: .main, in: .common)
+    @State var timer: Timer.TimerPublisher? = nil
     let dotSuffix: [String] = ["", ".", "..", "..."]
     
     var body: some View {
@@ -34,13 +33,14 @@ struct TimerView: View {
             }
             Text(timerMessage)
             Spacer()
-        }.onReceive(timer, perform: {_ in onTimer()})
+        }.onReceive(timer ?? Timer.publish(every: 1, on: .main, in: .common), perform: {_ in onTimer()})
     }
     
     func beginTimer() {
         remainingTime = tea.time
         showTimer = true
-        _ = timer.connect()
+        timer = Timer.publish(every: 1, on: .main, in: .common)
+        _ = timer?.connect()
         timerMessage = "Steeping"
     }
     
@@ -51,6 +51,7 @@ struct TimerView: View {
         } else {
             timerMessage = "Your tea is ready. Enjoy!"
             showTimer = false
+            self.timer?.connect().cancel()
         }
     }
 }
