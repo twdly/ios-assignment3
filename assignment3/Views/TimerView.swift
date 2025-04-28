@@ -14,6 +14,7 @@ struct TimerView: View {
     @StateObject var tea: TeaModel
     
     @State var remainingTime: Int = -1
+    @State var startTime: Date? = nil
     @State var showTimer: Bool = false
     @State var timerMessage = ""
     @State var timer: Timer.TimerPublisher? = nil
@@ -41,6 +42,7 @@ struct TimerView: View {
     }
     
     func beginTimer() {
+        startTime = Date()
         remainingTime = tea.time
         showTimer = true
         teaDb.timerDict[tea.id] = Date() // Initialise the dictionary with the current time so this view can be reinitialised if the user leaves
@@ -52,7 +54,7 @@ struct TimerView: View {
     
     func onTimer() {
         if remainingTime != 0 {
-            remainingTime -= 1
+            remainingTime = tea.time - Int(Date().timeIntervalSince(startTime!))
             timerMessage = "Steeping" + dotSuffix[(tea.time - remainingTime) % 4]
         } else {
             timerMessage = "Your tea is ready. Enjoy!"
