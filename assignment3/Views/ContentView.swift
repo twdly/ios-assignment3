@@ -6,10 +6,16 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct ContentView: View {
-    @State private var selectedTab: Tabs = .teas
     @StateObject private var teaDb: TeaDb = TeaDb()
+    
+    @State private var selectedTab: Tabs = .teas
+    @State private var showAlert: Bool = false
+    
+    @State private var alertTitle: String = ""
+    @State private var alertMessage: String = ""
     
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -25,7 +31,19 @@ struct ContentView: View {
             Tab("Reviews", systemImage: "star", value: .reviews) {
                 ReviewView()
             }
-        }.environmentObject(teaDb)
+        }.alert("Enable notifications", isPresented: $showAlert, actions: {}, message: {
+            Text("This app is designed to work best with notifications. Please enable notifications in the settings.")
+        })
+        .onAppear(perform: requestNotificationPermissions)
+        .environmentObject(teaDb)
+    }
+    
+    func requestNotificationPermissions() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, _ in
+            if !success {
+                showAlert = true
+            }
+        }
     }
 }
 
