@@ -22,7 +22,6 @@ struct TimerView: View {
     
     var body: some View {
         VStack {
-            Text(tea.name).font(.title)
             Spacer()
 
             if showTimer || remainingTime > 1 {
@@ -32,13 +31,25 @@ struct TimerView: View {
                 Text("Water amount: \(tea.waterAmount) mL")
                 Text("Time: \(tea.time) seconds")
                 Button(action: beginTimer) {
-                    Text("Begin").padding()
+                    HStack {
+                        Image(systemName: "play.circle.fill")
+                        Text("Begin")
+                    }.padding()
                 }
             }
             Text(timerMessage)
             Spacer()
         }.onReceive(timer ?? Timer.publish(every: 1, on: .main, in: .common), perform: {_ in onTimer()})
             .onAppear(perform: initialiseTimer)
+            .toolbar {
+                NavigationLink {
+                    WriteReviewView(tea: tea)
+                } label: {
+                    Image(systemName: "square.and.pencil")
+                }
+            }
+            .navigationTitle(tea.name)
+            .navigationBarTitleDisplayMode(.inline)
     }
     
     func beginTimer() {
