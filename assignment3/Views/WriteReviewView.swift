@@ -9,9 +9,11 @@ import SwiftUI
 
 struct WriteReviewView: View {
     @StateObject var tea: TeaModel
+    
     @State var rating: Int = 0
     @State var reviewText: String = ""
     @State var errorMessage: String = ""
+    @State var showAlert: Bool = false
     
     var body: some View {
         VStack {
@@ -33,7 +35,11 @@ struct WriteReviewView: View {
                 Text("Submit")
             }.padding()
             Text(errorMessage).foregroundStyle(.red)
-        }.navigationTitle("Review \(tea.name)")
+        }
+        .navigationTitle("Review \(tea.name)")
+        .alert("Success!", isPresented: $showAlert, actions: {}, message: {
+            Text("Thank you for your review!")
+        })
     }
     
     func submit() async {
@@ -47,6 +53,7 @@ struct WriteReviewView: View {
         request.httpMethod = "POST"
         do {
             _ = try await URLSession.shared.upload(for: request, from: JSONEncoder().encode(review))
+            showAlert = true
         } catch {
             errorMessage = "Something went wrong, please try again later"
         }
