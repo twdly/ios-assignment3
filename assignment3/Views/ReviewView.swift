@@ -18,10 +18,15 @@ struct ReviewView: View {
             } else {
                 List {
                     ForEach(reviews) { review in
-                        VStack {
+                        VStack(alignment: .leading) {
                             Text(review.teaName).font(.title2)
                             Text("\(review.rating) / 10")
                             Text(review.message)
+                            if !review.url.isEmpty {
+                                Link(destination: URL(string: review.url)!) {
+                                    Image(systemName: "link")
+                                }
+                            }
                         }
                     }
                 }
