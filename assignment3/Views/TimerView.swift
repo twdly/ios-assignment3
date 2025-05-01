@@ -43,7 +43,7 @@ struct TimerView: View {
             .onAppear(perform: initialiseTimer)
             .toolbar {
                 NavigationLink {
-                    WriteReviewView()
+                    WriteReviewView(tea: tea)
                 } label: {
                     Image(systemName: "square.and.pencil")
                 }

@@ -8,13 +8,33 @@
 import SwiftUI
 
 struct WriteReviewView: View {
-    
+    @StateObject var tea: TeaModel
+    @State var rating: Int = 1
+    @State var reviewText: String = ""
     
     var body: some View {
-        Text("Write review view")
+        VStack {
+            HStack {
+                Text("Rating:")
+                Picker("Rating", selection: $rating) {
+                    ForEach(1..<11) { num in
+                        Text("\(num)")
+                    }
+                }
+                Text("/ 10")
+            }
+            TextField("Share your thoughts...", text: $reviewText).frame(width: 300, height: 150, alignment: .top).border(.gray)
+            Button(action: submit) {
+                Text("Submit")
+            }.padding()
+        }.navigationTitle("Review \(tea.name)")
+    }
+    
+    func submit() {
+        
     }
 }
 
 #Preview {
-    WriteReviewView()
+    WriteReviewView(tea: TeaDb().teas[0])
 }
