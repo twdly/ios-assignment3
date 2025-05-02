@@ -12,20 +12,14 @@ struct TimerView: View {
     @EnvironmentObject var teaDb: TeaDb
     
     @StateObject var tea: TeaModel
-    
-    @State var remainingTime: Int = -1
-    @State var startTime: Date? = nil
-    @State var showTimer: Bool = false
-    @State var timerMessage = ""
-    @State var timer: Timer.TimerPublisher? = nil
-    let dotSuffix: [String] = ["", ".", "..", "..."]
+    @StateObject var timerViewModel: TimerViewModel = TimerViewModel()
     
     var body: some View {
         VStack {
             Spacer()
 
-            if showTimer || remainingTime > 1 {
-                Text("Remaining time: \(remainingTime/60):\(String(format: "%02d", remainingTime%60))").padding()
+            if timerViewModel.showTimer || timerViewModel.remainingTime > 1 {
+                Text("Remaining time: \(timerViewModel.remainingTime/60):\(String(format: "%02d", timerViewModel.remainingTime%60))").padding()
             } else {
                 Text("Water temp: \(tea.waterTemp) ºC")
                 Text("Water amount: \(tea.waterAmount) mL")
@@ -37,10 +31,10 @@ struct TimerView: View {
                     }.padding()
                 }
             }
-            Text(timerMessage)
+            Text(timerViewModel.timerMessage)
             Spacer()
-        }.onReceive(timer ?? Timer.publish(every: 1, on: .main, in: .common), perform: {_ in onTimer()})
-            .onAppear(perform: initialiseTimer)
+        }.onReceive(timerViewModel.timer ?? Timer.publish(every: 1, on: .main, in: .common), perform: {_ in timerViewModel.onTimer(tea: tea)})
+            .onAppear(perform: initialiseView)
             .toolbar {
                 NavigationLink {
                     WriteReviewView(tea: tea)
@@ -53,61 +47,15 @@ struct TimerView: View {
     }
     
     func beginTimer() {
-        startTime = Date()
-        remainingTime = tea.time
-        showTimer = true
-        teaDb.timerDict[tea.id] = Date() // Initialise the dictionary with the current time so this view can be reinitialised if the user leaves
-        timer = Timer.publish(every: 1, on: .main, in: .common)
-        _ = timer?.connect()
-        timerMessage = "Steeping"
-        schedulateNotification()
+        timerViewModel.beginTimer(tea: tea, teaDb: teaDb)
     }
     
-    func onTimer() {
-        if remainingTime != 0 {
-            remainingTime = tea.time - Int(Date().timeIntervalSince(startTime!))
-            timerMessage = "Steeping" + dotSuffix[(tea.time - remainingTime) % 4]
-        } else {
-            timerMessage = "Your tea is ready. Enjoy!"
-            showTimer = false
-            self.timer?.connect().cancel()
-        }
-    }
-    
-    func initialiseTimer() {
-        guard let startTime = teaDb.timerDict[tea.id] else {
-            // This timer is not currently running, do nothing
-            return
-        }
-        
-        let newTime = tea.time - Int(Date().timeIntervalSince(startTime))
-        guard newTime > 0 else {
-            // Time has expired and is no longer needed
-            teaDb.timerDict.removeValue(forKey: tea.id)
-            return
-        }
-        
-        remainingTime = newTime
-        showTimer = true
-        timer = Timer.publish(every: 1, on: .main, in: .common)
-        _ = timer?.connect()
-        timerMessage = "Steeping"
-    }
-    
-    func schedulateNotification() {
-        let notifContent = UNMutableNotificationContent()
-        notifContent.title = "Tea time!"
-        notifContent.body = "Your \(tea.name) is ready!"
-        notifContent.sound = .defaultRingtone
-        
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(tea.time), repeats: false)
-        
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: notifContent, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request)
+    func initialiseView() {
+        timerViewModel.initialiseTimer(tea: tea, teaDb: teaDb)
     }
 }
 
 #Preview {
-    TimerView(tea: TeaDb().teas[4]).environmentObject(TeaDb())
+    let tea = TeaModel(id: 0, name: "Test", type: .oolong, waterAmount: 92, waterTemp: 92, time: 5, url: "https://example.com")
+    TimerView(tea: tea).environmentObject(TeaDb())
 }
