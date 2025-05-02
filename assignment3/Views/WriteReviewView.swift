@@ -26,7 +26,10 @@ struct WriteReviewView: View {
                 }
                 Text("/ 10")
             }
-            TextField("Share your thoughts...", text: $reviewText).frame(width: 300, height: 150, alignment: .top).border(.gray)
+            TextField("Share your thoughts...", text: $reviewText, axis: .vertical)
+                .lineLimit(2...10)
+                .frame(width: 300, alignment: .top)
+                .border(.gray)
             Button {
                 Task {
                     await submitReview()
