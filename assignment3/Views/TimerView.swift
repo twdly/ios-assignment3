@@ -24,7 +24,7 @@ struct TimerView: View {
                 Text("Water temp: \(tea.waterTemp) ºC")
                 Text("Water amount: \(tea.waterAmount) mL")
                 Text("Time: \(tea.time) seconds")
-                Button(action: beginTimer) {
+                Button(action: { timerViewModel.beginTimer(tea: tea, teaDb: teaDb) }) {
                     HStack {
                         Image(systemName: "play.circle.fill")
                         Text("Begin")
@@ -32,26 +32,26 @@ struct TimerView: View {
                 }
             }
             Text(timerViewModel.timerMessage)
+            NavigationLink {
+                WriteReviewView(tea: tea)
+            } label: {
+                HStack {
+                    Image(systemName: "pencil")
+                    Text("Write review")
+                }
+            }.padding()
             Spacer()
         }.onReceive(timerViewModel.timer ?? Timer.publish(every: 1, on: .main, in: .common), perform: {_ in timerViewModel.onTimer(tea: tea)})
-            .onAppear(perform: initialiseView)
+            .onAppear(perform: { timerViewModel.initialiseTimer(tea: tea, teaDb: teaDb) })
             .toolbar {
                 NavigationLink {
-                    WriteReviewView(tea: tea)
+                    // Edit view goes here
                 } label: {
                     Image(systemName: "square.and.pencil")
                 }
             }
             .navigationTitle(tea.name)
             .navigationBarTitleDisplayMode(.inline)
-    }
-    
-    func beginTimer() {
-        timerViewModel.beginTimer(tea: tea, teaDb: teaDb)
-    }
-    
-    func initialiseView() {
-        timerViewModel.initialiseTimer(tea: tea, teaDb: teaDb)
     }
 }
 
