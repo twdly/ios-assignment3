@@ -19,7 +19,7 @@ struct TimerView: View {
             Spacer()
 
             if timerViewModel.showTimer || timerViewModel.remainingTime > 1 {
-                Text("Remaining time: \(timerViewModel.remainingTime/60):\(String(format: "%02d", timerViewModel.remainingTime%60))").padding()
+                Text("Remaining time: \(timerViewModel.getFormattedTime())").padding()
             } else {
                 Text("Water temp: \(tea.waterTemp) ºC")
                 Text("Water amount: \(tea.waterAmount) mL")
