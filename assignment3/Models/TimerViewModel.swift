@@ -18,12 +18,13 @@ class TimerViewModel: ObservableObject {
     let dotSuffix: [String] = ["", ".", "..", "..."]
     
     func initialiseTimer(tea: TeaModel, teaDb: TeaDb) {
-        guard let startTime = teaDb.timerDict[tea.id] else {
+        guard let dictStartTime = teaDb.timerDict[tea.id] else {
             // This timer is not currently running, do nothing
             return
         }
         
-        let newTime = tea.time - Int(Date().timeIntervalSince(startTime))
+        startTime = dictStartTime
+        let newTime = tea.time - Int(Date().timeIntervalSince(startTime!))
         guard newTime > 0 else {
             // Time has expired and is no longer needed
             teaDb.timerDict.removeValue(forKey: tea.id)
