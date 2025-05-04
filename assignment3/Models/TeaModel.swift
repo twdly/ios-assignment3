@@ -26,3 +26,13 @@ class TeaModel: Identifiable, Codable, ObservableObject {
         self.url = url
     }
 }
+
+extension TeaModel: Hashable {
+    static func == (lhs: TeaModel, rhs: TeaModel) -> Bool {
+        return lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
