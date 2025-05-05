@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TeaListView: View {
     @EnvironmentObject var teaDb: TeaDb
+    @State private var showingAdd = false
     
     var body: some View {
         NavigationStack {
@@ -26,6 +27,19 @@ struct TeaListView: View {
                 }
             }
             .navigationTitle("My teas")
+            .toolbar {
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button {
+                                    showingAdd.toggle()
+                                } label: {
+                                    Image(systemName: "plus")
+                                }
+                            }
+                        }
+                        .sheet(isPresented: $showingAdd) {
+                            AddTeaView()
+                                .environmentObject(teaDb)
+                        }
             .overlay(content: {
                 if teaDb.teas.count == 0 {
                     Text("No teas could be found")

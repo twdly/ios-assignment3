@@ -6,7 +6,6 @@
 //
 import SwiftUI
 struct AddTeaView: View {
-    @EnvironmentObject private var teaDb: TeaDb
     @Environment(\.presentationMode) private var presentation
     @State private var name         = ""
     @State private var selectedType: TeaType = .black
@@ -41,14 +40,13 @@ struct AddTeaView: View {
                         .keyboardType(.URL)
                 }
                 
-                Section {
+                
                     Button("Save Tea") {
-                        saveTea()
+                        presentation.wrappedValue.dismiss()
                     }
-                    .disabled(name.isEmpty)
-                }
+                    
             })
-            .navigationTitle("Add New Tea")
+            .navigationTitle("New Tea")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
@@ -58,22 +56,7 @@ struct AddTeaView: View {
             }
         }
     }
-    
-    private func saveTea() {
-        guard
-            let amt   = Int(amountText),
-            let temp  = Int(tempText),
-            let secs  = Int(timeText)
-        else {
-            return
-        }
-    }
-    
-        struct AddTeaView_Previews: PreviewProvider {
-            static var previews: some View {
-                AddTeaView()
-                    .environmentObject(TeaDb())
-            }
-        }
-    }
-
+}
+#Preview {
+    AddTeaView().environmentObject(TeaDb())
+}
