@@ -2,59 +2,49 @@
 //  AddTeaView.swift
 //  assignment3
 //
-<<<<<<< Updated upstream
-//  Created by Darren Marvin on 4/5/2025.
-//
-
-=======
 //  Created by Delbert Charlie on 1/5/2025.
 //
-
 import SwiftUI
-
 struct AddTeaView: View {
     @EnvironmentObject private var teaDb: TeaDb
     @Environment(\.presentationMode) private var presentation
-
-    @State private var name      = ""
-    @State private var tempMin   = ""
-    @State private var tempMax   = ""
-    @State private var amount    = ""
-    @State private var steepTime = ""
-
+    @State private var name         = ""
+    @State private var selectedType: TeaType = .black
+    @State private var amountText   = ""
+    @State private var tempText     = ""
+    @State private var timeText     = ""
+    @State private var urlString    = ""
+    
     var body: some View {
         NavigationView {
             Form(content: {
-                           Section("Tea Details") {
-                               TextField("Name", text: $name)
-                               TextField("Min Temp (°C)", text: $tempMin)
-                                   .keyboardType(.decimalPad)
-                               TextField("Max Temp (°C)", text: $tempMax)
-                                   .keyboardType(.decimalPad)
-                               TextField("Amount (g)", text: $amount)
-                                   .keyboardType(.decimalPad)
-                               TextField("Steep Time (sec)", text: $steepTime)
-                                   .keyboardType(.numberPad)
-                           }
-           
+                Section("Tea Details") {
+                    TextField("Name", text: $name)
+                    
+                    Picker("Type", selection: $selectedType) {
+                        ForEach(TeaType.allCases, id: \.self) { t in
+                            Text(t.rawValue.capitalized).tag(t)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    
+                    TextField("Water Amount (ml)", text: $amountText)
+                        .keyboardType(.numberPad)
+                    
+                    TextField("Water Temp (°C)", text: $tempText)
+                        .keyboardType(.numberPad)
+                    
+                    TextField("Steep Time (sec)", text: $timeText)
+                        .keyboardType(.numberPad)
+                    
+                    TextField("URL (optional)", text: $urlString)
+                        .keyboardType(.URL)
+                }
+                
                 Section {
-                    Button("Save Tea", action: {
-                        guard
-                          let minT = Double(tempMin),
-                          let maxT = Double(tempMax),
-                          let amt  = Double(amount),
-                          let time = TimeInterval(steepTime)
-                        else { return }
-                        
-                        teaDb.addTea(
-                            name: name,
-                            tempMin: minT,
-                            tempMax: maxT,
-                            amount: amt,
-                            steepTime: time
-                        )
-                        presentation.wrappedValue.dismiss()
-                    })
+                    Button("Save Tea") {
+                        saveTea()
+                    }
                     .disabled(name.isEmpty)
                 }
             })
@@ -68,5 +58,22 @@ struct AddTeaView: View {
             }
         }
     }
-}
->>>>>>> Stashed changes
+    
+    private func saveTea() {
+        guard
+            let amt   = Int(amountText),
+            let temp  = Int(tempText),
+            let secs  = Int(timeText)
+        else {
+            return
+        }
+    }
+    
+        struct AddTeaView_Previews: PreviewProvider {
+            static var previews: some View {
+                AddTeaView()
+                    .environmentObject(TeaDb())
+            }
+        }
+    }
+
