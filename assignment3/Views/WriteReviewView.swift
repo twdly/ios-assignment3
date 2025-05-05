@@ -26,10 +26,13 @@ struct WriteReviewView: View {
                 }
                 Text("/ 10")
             }
-            TextField("Share your thoughts...", text: $reviewText).frame(width: 300, height: 150, alignment: .top).border(.gray)
+            TextField("Share your thoughts...", text: $reviewText, axis: .vertical)
+                .lineLimit(2...10)
+                .frame(width: 300, alignment: .top)
+                .border(.gray)
             Button {
                 Task {
-                    await submit()
+                    await submitReview()
                 }
             } label: {
                 Text("Submit")
@@ -42,21 +45,12 @@ struct WriteReviewView: View {
         })
     }
     
-    func submit() async {
+    func submitReview() async {
         let review = ReviewModel(id: -1, teaName: tea.name, rating: rating + 1, message: reviewText, url: tea.url ?? "")
         
-        // This URL is a web server used to store and read reviews in json format
-        // https://github.com/twdly/tea-reviews
-        let url = URL(string: "https://teareview-fuaygvbagwfegda8.australiaeast-01.azurewebsites.net/")!
-        var request = URLRequest(url: url)
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = "POST"
-        do {
-            _ = try await URLSession.shared.upload(for: request, from: JSONEncoder().encode(review))
-            showAlert = true
-        } catch {
-            errorMessage = "Something went wrong, please try again later"
-        }
+        showAlert = await ReviewDb.postReview(review)
+        
+        errorMessage = showAlert ? "" : "Something went wrong, please try again."
     }
 }
 
