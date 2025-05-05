@@ -6,6 +6,7 @@
 //
 import SwiftUI
 struct AddTeaView: View {
+    @EnvironmentObject private var teaDb: TeaDb
     @Environment(\.presentationMode) private var presentation
     @State private var name         = ""
     @State private var selectedType: TeaType = .black
@@ -13,39 +14,62 @@ struct AddTeaView: View {
     @State private var tempText     = ""
     @State private var timeText     = ""
     @State private var urlString    = ""
-    
+
     var body: some View {
         NavigationView {
-            Form(content: {
+            Form {
                 Section("Tea Details") {
                     TextField("Name", text: $name)
-                    
+
                     Picker("Type", selection: $selectedType) {
                         ForEach(TeaType.allCases, id: \.self) { t in
-                            Text(t.rawValue.capitalized).tag(t)
+                            Text(t.rawValue.capitalized)
                         }
                     }
                     .pickerStyle(.segmented)
-                    
+
                     TextField("Water Amount (ml)", text: $amountText)
                         .keyboardType(.numberPad)
-                    
+
                     TextField("Water Temp (°C)", text: $tempText)
                         .keyboardType(.numberPad)
-                    
+
                     TextField("Steep Time (sec)", text: $timeText)
                         .keyboardType(.numberPad)
-                    
+
                     TextField("URL (optional)", text: $urlString)
                         .keyboardType(.URL)
                 }
-                
-                
+
+                Section {
                     Button("Save Tea") {
+                        guard
+                            let amt  = Int(amountText),
+                            let tmp  = Int(tempText),
+                            let secs = Int(timeText)
+                        else {
+                            return
+                        }
+                        
+                        teaDb.objectWillChange.send()
+
+                        let nextID = (teaDb.teas.map(\.id).max() ?? -1) + 1
+
+                        let newTea = TeaModel(
+                            id: nextID,
+                            name: name,
+                            type: selectedType,
+                            waterAmount: amt,
+                            waterTemp: tmp,
+                            time: secs,
+                            url: urlString.isEmpty ? nil : urlString
+                        )
+                        teaDb.teas.append(newTea)
                         presentation.wrappedValue.dismiss()
                     }
-                    
-            })
+                    .disabled(name.isEmpty)
+                }
+            }
             .navigationTitle("New Tea")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -57,6 +81,8 @@ struct AddTeaView: View {
         }
     }
 }
+
 #Preview {
-    AddTeaView().environmentObject(TeaDb())
+    AddTeaView()
+      .environmentObject(TeaDb())
 }
