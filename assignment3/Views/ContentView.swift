@@ -22,6 +22,9 @@ struct ContentView: View {
             Tab("Teas", systemImage: "cup.and.saucer.fill", value: .teas) {
                 TeaListView()
             }
+            Tab("Timers", systemImage: "clock", value: .timers) {
+                TimerListView()
+            }
             Tab("Randomiser", systemImage: "dice", value: .randomiser) {
                 RandomiserView()
             }

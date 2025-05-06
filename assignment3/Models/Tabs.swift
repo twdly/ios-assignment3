@@ -7,6 +7,7 @@
 
 enum Tabs {
     case teas
+    case timers
     case reviews
     case stock
     case randomiser
