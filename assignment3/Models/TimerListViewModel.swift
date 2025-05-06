@@ -16,9 +16,13 @@ class TimerListViewModel: ObservableObject {
     }
     
     func initialiseTimers(db teaDb: TeaDb) {
-        timers = []
         for timer in teaDb.timerDict {
             guard let tea = teaDb.getBy(id: timer.key) else {
+                continue
+            }
+            
+            guard !timers.contains(where: {$0.id == tea.id}) else {
+                timers.first(where: {$0.id == tea.id})?.remainingTime = tea.time - Int(Date().timeIntervalSince(timer.value))
                 continue
             }
             
