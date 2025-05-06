@@ -23,16 +23,16 @@ class TimerListViewModel: ObservableObject {
             }
             
             let remainingTime = tea.time - Int(Date().timeIntervalSince(timer.value))
-            timers.append(TeaTimerModel(id: timer.key, name: tea.name, remainingTime: remainingTime))
+            if remainingTime > 0 {
+                timers.append(TeaTimerModel(id: timer.key, name: tea.name, remainingTime: remainingTime))
+            }
         }
     }
     
     func update() {
         for timerModel in timers {
             timerModel.remainingTime -= 1
-            if timerModel.remainingTime == 0 {
-                timers.removeAll(where: {$0.id == timerModel.id})
-            }
         }
+        timers.removeAll(where: {$0.remainingTime <= 0})
     }
 }
