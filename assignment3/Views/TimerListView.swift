@@ -14,17 +14,19 @@ struct TimerListView: View {
     @StateObject var timersViewModel: TimerListViewModel = TimerListViewModel()
     
     var body: some View {
-        VStack {
+        NavigationStack {
             if timersViewModel.timers.isEmpty {
                 Text("No timers are currently running")
             } else {
                 List {
                     ForEach(timersViewModel.timers) { timer in
-                        Text("\(timer.name) - \(timer.getFormattedTime())")
+                        TimerListRow(timer: timer)
                     }
-                }
+                }.navigationTitle("Timers")
             }
-        }.onAppear(perform: initialiseTimers)
+        }
+        .onAppear(perform: initialiseTimers)
+        .onReceive(timersViewModel.timer, perform: {_ in timersViewModel.update()})
     }
     
     func initialiseTimers() {
@@ -33,5 +35,5 @@ struct TimerListView: View {
 }
 
 #Preview {
-    TimerListView().environmentObject(TeaDb())
+    ContentView()
 }

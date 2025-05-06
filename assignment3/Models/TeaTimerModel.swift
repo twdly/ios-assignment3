@@ -7,10 +7,10 @@
 
 import Foundation
 
-class TeaTimerModel: Identifiable {
+class TeaTimerModel: Identifiable, ObservableObject {
     let id: Int
     let name: String
-    var remainingTime: Int
+    @Published var remainingTime: Int
     
     init(id: Int, name: String, remainingTime: Int) {
         self.id = id
