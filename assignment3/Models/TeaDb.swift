@@ -15,6 +15,10 @@ class TeaDb: ObservableObject {
         return teas.filter({$0.type == type})
     }
     
+    func getBy(id: Int) -> TeaModel? {
+        return teas.first(where: {$0.id == id})
+    }
+    
     static func getTeas() -> [TeaModel] {
         // This will eventually need to read from a json file
         let tea1 = TeaModel(id: 0, name: "English Caramel", type: .black, waterAmount: 250, waterTemp: 100, time: 180, url: "https://www.lupicia.com.au/22/black-tea-flavoured/194/english-caramel")

@@ -7,12 +7,31 @@
 
 import SwiftUI
 
-struct TimerListView: View {    
+struct TimerListView: View {
+    @EnvironmentObject var teaDb: TeaDb
+    
+    // timers need to be calculated from the environment object above
+    @StateObject var timersViewModel: TimerListViewModel = TimerListViewModel()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            if timersViewModel.timers.isEmpty {
+                Text("No timers are currently running")
+            } else {
+                List {
+                    ForEach(timersViewModel.timers) { timer in
+                        Text("\(timer.name) - \(timer.getFormattedTime())")
+                    }
+                }
+            }
+        }.onAppear(perform: initialiseTimers)
+    }
+    
+    func initialiseTimers() {
+        timersViewModel.initialiseTimers(db: teaDb)
     }
 }
 
 #Preview {
-    TimerListView()
+    TimerListView().environmentObject(TeaDb())
 }
