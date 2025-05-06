@@ -25,12 +25,8 @@ struct TimerListView: View {
                 }.navigationTitle("Timers")
             }
         }
-        .onAppear(perform: initialiseTimers)
-        .onReceive(timersViewModel.timer, perform: {_ in timersViewModel.update()})
-    }
-    
-    func initialiseTimers() {
-        timersViewModel.initialiseTimers(db: teaDb)
+        .onAppear(perform: { timersViewModel.initialiseTimers(db: teaDb) })
+        .onReceive(timersViewModel.timer, perform: { _ in timersViewModel.update() })
     }
 }
 
