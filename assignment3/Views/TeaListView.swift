@@ -9,7 +9,10 @@ import SwiftUI
 
 struct TeaListView: View {
     @EnvironmentObject var teaDb: TeaDb
+    @State private var showMenu = false
     @State private var showingAdd = false
+    @State private var showingEditList = false
+    @State private var editingTea: TeaModel? = nil
     
     var body: some View {
         NavigationStack {
@@ -27,17 +30,45 @@ struct TeaListView: View {
                 }
             }
             .navigationTitle("My teas")
-            .toolbar {
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button {
-                                    showingAdd.toggle()
-                                } label: {
-                                    Image(systemName: "plus")
+            .toolbar(content: {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    showingAdd.toggle()
+                } label: {
+                    Image(systemName: "line.3.horizontal")
+                }
+                    .confirmationDialog("What would you like to do?", isPresented: $showMenu, titleVisibility: .visible) {
+                            Button("Add Tea") { showingAdd = true }
+                            Button("Edit Tea") { showingEditList = true }
+                            Button("Cancel", role: .cancel) {}
+                    }
+                }
+            }
+            .sheet(isPresented: $showingAdd) {
+                AddTeaView()
+                .environmentObject(teaDb)
+            }
+            .sheet(isPresented: $showingEditList) {
+                            NavigationStack {
+                                List(teaDb.teas) { tea in
+                                    Button(tea.name) {
+                                        editingTea = tea
+                                        showingEditList = false
+                                    }
+                                }
+                                .navigationTitle("Select Tea to Edit")
+                                .toolbar {
+                                    ToolbarItem(placement: .cancellationAction) {
+                                        Button("Cancel") {
+                                            showingEditList = false
+                                        }
+                                    }
                                 }
                             }
+                            .environmentObject(teaDb)
                         }
-                        .sheet(isPresented: $showingAdd) {
-                            AddTeaView()
+                        .sheet(item: $editingTea) { tea in
+                            EditTeaView(tea: tea)
                                 .environmentObject(teaDb)
                         }
             .overlay(content: {
