@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ReviewView: View {
-    @State var reviewsDb: ReviewDb = ReviewDb()
+    @StateObject var reviewsDb: ReviewDb = ReviewDb()
     @State var errorMessage: String = ""
     
     var body: some View {
