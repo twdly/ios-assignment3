@@ -50,7 +50,7 @@ class TimerViewModel: ObservableObject {
     }
     
     func onTimer(tea: TeaModel) {
-        if remainingTime != 0 {
+        if remainingTime > 0 {
             remainingTime = tea.time - Int(Date().timeIntervalSince(startTime!))
             timerMessage = "Steeping" + dotSuffix[(tea.time - remainingTime) % 4]
         } else {
