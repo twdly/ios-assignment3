@@ -19,14 +19,14 @@ struct TimerView: View {
             Spacer()
 
             if timerViewModel.showTimer || timerViewModel.remainingTime > 1 {
-                Text("Remaining time: \(timerViewModel.getFormattedTime())").padding()
+                InfoPanelView(title: "Remaining time", imageName: "cup.and.saucer", details: timerViewModel.getFormattedTime(), width: 180)
             } else {
                 HStack {
-                    InfoPanelView(title: "Water temp.", imageName: "thermometer", details: "\(tea.waterTemp)ºC")
-                    InfoPanelView(title: "Water amount", imageName: "drop", details: "\(tea.waterAmount) mL")
+                    InfoPanelView(title: "Water temp.", imageName: "thermometer", details: "\(tea.waterTemp)ºC", width: 140)
+                    InfoPanelView(title: "Water amount", imageName: "drop", details: "\(tea.waterAmount) mL", width: 140)
                 }
                 HStack {
-                    InfoPanelView(title: "Time", imageName: "clock", details: "\(tea.time) seconds")
+                    InfoPanelView(title: "Time", imageName: "clock", details: "\(tea.time) seconds", width: 140)
                 }
                 Button(action: { timerViewModel.beginTimer(tea: tea, teaDb: teaDb) }) {
                     HStack {
@@ -34,16 +34,16 @@ struct TimerView: View {
                         Text("Begin")
                     }.padding()
                 }
+                NavigationLink {
+                    WriteReviewView(tea: tea)
+                } label: {
+                    HStack {
+                        Image(systemName: "pencil")
+                        Text("Write review")
+                    }
+                }.padding()
             }
-            Text(timerViewModel.timerMessage)
-            NavigationLink {
-                WriteReviewView(tea: tea)
-            } label: {
-                HStack {
-                    Image(systemName: "pencil")
-                    Text("Write review")
-                }
-            }.padding()
+            Text(timerViewModel.timerMessage).padding()
             Spacer()
         }.onReceive(timerViewModel.timer ?? Timer.publish(every: 1, on: .main, in: .common), perform: {_ in timerViewModel.onTimer(tea: tea)})
             .onAppear(perform: { timerViewModel.initialiseTimer(tea: tea, teaDb: teaDb) })

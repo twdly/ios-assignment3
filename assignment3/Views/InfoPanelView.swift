@@ -11,6 +11,7 @@ struct InfoPanelView: View {
     let title: String
     let imageName: String
     let details: String
+    let width: Int
     
     var body: some View {
         VStack {
@@ -19,13 +20,13 @@ struct InfoPanelView: View {
                 Text(title)
             }
             Text(details).padding(.top)
-
-        }.padding()
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)))
-
+        }
+        .frame(width: CGFloat(width), height: 80)
+        .padding()
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)))
     }
 }
 
 #Preview {
-    InfoPanelView(title: "Temperature", imageName: "thermometer", details: "92°C")
+    InfoPanelView(title: "Temperature", imageName: "thermometer", details: "92°C", width: 140)
 }
