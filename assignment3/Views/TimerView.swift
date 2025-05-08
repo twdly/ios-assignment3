@@ -21,9 +21,13 @@ struct TimerView: View {
             if timerViewModel.showTimer || timerViewModel.remainingTime > 1 {
                 Text("Remaining time: \(timerViewModel.getFormattedTime())").padding()
             } else {
-                Text("Water temp: \(tea.waterTemp) ºC")
-                Text("Water amount: \(tea.waterAmount) mL")
-                Text("Time: \(tea.time) seconds")
+                HStack {
+                    InfoPanelView(title: "Water temp.", imageName: "thermometer", details: "\(tea.waterTemp)ºC")
+                    InfoPanelView(title: "Water amount", imageName: "drop", details: "\(tea.waterAmount) mL")
+                }
+                HStack {
+                    InfoPanelView(title: "Time", imageName: "clock", details: "\(tea.time) seconds")
+                }
                 Button(action: { timerViewModel.beginTimer(tea: tea, teaDb: teaDb) }) {
                     HStack {
                         Image(systemName: "play.circle.fill")
