@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ReviewDb {
+class ReviewDb: ObservableObject {
     @Published var reviews: [ReviewModel] = []
     
     func loadReviews() async -> String {

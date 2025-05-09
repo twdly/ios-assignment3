@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct ReviewView: View {
-    @State var reviewsDb: ReviewDb = ReviewDb()
+    @StateObject var reviewsDb: ReviewDb = ReviewDb()
     @State var errorMessage: String = ""
     
     var body: some View {
-        VStack {
+        NavigationStack {
             if reviewsDb.reviews.isEmpty {
                 Text(errorMessage.isEmpty ? "No reviews could be found" : errorMessage)
             } else {
@@ -29,7 +29,7 @@ struct ReviewView: View {
                             }
                         }
                     }
-                }
+                }.navigationTitle("Reviews")
             }
         }.onAppear(perform: {
             Task {
