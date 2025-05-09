@@ -75,9 +75,6 @@ struct EditTeaView: View {
             .navigationTitle("Edit Tea")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        presentation.wrappedValue.dismiss()
-                    }
                 }
             }
         }

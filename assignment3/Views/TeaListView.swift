@@ -25,6 +25,13 @@ struct TeaListView: View {
                                 } label: {
                                     Text(tea.name)
                                 }
+                                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                    Button(role: .destructive) {
+                                        delete(tea: tea)
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                }
+                            }
                             }
                         }
                     }
@@ -32,23 +39,18 @@ struct TeaListView: View {
             }
             .navigationTitle("My Teas")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        showMenu = true
-                    } label: {
-                        Image(systemName: "line.3.horizontal")
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button {
+                                showingAdd.toggle()
+                            } label: {
+                                Image(systemName: "plus")
+                            }
+                        }
                     }
-                    .confirmationDialog("Manage Teas", isPresented: $showMenu, titleVisibility: .visible) {
-                        Button("Add New Tea") { showingAdd = true }
-                        Button("Edit Existing Tea") { showingEditList = true }
-                        Button("Cancel", role: .cancel) {}
-                    }
+                    .sheet(isPresented: $showingAdd) {
+                        AddTeaView()
+                            .environmentObject(teaDb)
                 }
-            }
-            .sheet(isPresented: $showingAdd) {
-                AddTeaView()
-                    .environmentObject(teaDb)
-            }
             .overlay {
                 if teaDb.teas.isEmpty {
                     Text("No teas could be found")
@@ -58,6 +60,12 @@ struct TeaListView: View {
         }
     }
 }
+
+/*private func delete(tea: TeaModel) {
+        teaDb.objectWillChange.send()
+        teaDb.teas.removeAll { $0.id == tea.id }
+    }*/
+
 
 #Preview {
     TeaListView()
