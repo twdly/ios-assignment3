@@ -45,7 +45,7 @@ struct TimerView: View {
             .onAppear(perform: { timerViewModel.initialiseTimer(tea: tea, teaDb: teaDb) })
             .toolbar {
                 NavigationLink {
-                    // Edit view goes here
+                    EditTeaView(originalTea:tea).environmentObject(teaDb)
                 } label: {
                     Image(systemName: "square.and.pencil")
                 }
