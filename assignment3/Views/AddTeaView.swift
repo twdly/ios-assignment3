@@ -83,6 +83,5 @@ struct AddTeaView: View {
 }
 
 #Preview {
-    AddTeaView()
-      .environmentObject(TeaDb())
+    AddTeaView().environmentObject(TeaDb())
 }
