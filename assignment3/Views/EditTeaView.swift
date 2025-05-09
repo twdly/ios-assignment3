@@ -10,11 +10,9 @@ import SwiftUI
 struct EditTeaView: View {
     @EnvironmentObject private var teaDb: TeaDb
     @Environment(\.presentationMode) private var presentation
-
-    // Pass in the tea to edit (only need its ID)
+    
     let originalTea: TeaModel
-
-    // Local editable state (start blank for fresh input)
+    
     @State private var name: String = ""
     @State private var selectedType: TeaType = .black
     @State private var amountText: String = ""
