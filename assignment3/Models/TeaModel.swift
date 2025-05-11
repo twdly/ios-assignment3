@@ -27,11 +27,14 @@ class TeaModel: Identifiable, Codable, ObservableObject {
     }
 }
 
+/// SwiftUI must know which TeaModel you want to navigate via comparing id
 extension TeaModel: Hashable {
+    // Compare two TeaModels by id to check equality
     static func == (lhs: TeaModel, rhs: TeaModel) -> Bool {
         return lhs.id == rhs.id
     }
-
+    
+    // Generate hash value using id
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
