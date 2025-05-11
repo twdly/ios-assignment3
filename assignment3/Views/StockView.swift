@@ -12,27 +12,29 @@ struct StockView: View {
     @State private var showingAdd = false
 
     var body: some View {
-        List {
-            ForEach(TeaCategory.allCases, id: \.self) { teaType in
-                let teas = teaDb.getBy(category: teaType)
-
-                if !teas.isEmpty {
-                    Section(header: Text("\(teaType.rawValue.capitalized) teas")) {
-                        ForEach(teas) { tea in
-                            VStack(alignment: .leading) {
-                                Text(tea.name)
-                                    .font(.headline)
-                                
-                                let unit = tea.teaType.rawValue.lowercased() == "loose" ? "grams" : "bags"
-                                Text("Stock: \(tea.amountStocked) \(unit)")
-                                Text("Remain")
+        NavigationStack{
+            List {
+                ForEach(TeaCategory.allCases, id: \.self) { teaType in
+                    let teas = teaDb.getBy(category: teaType)
+                    
+                    if !teas.isEmpty {
+                        Section(header: Text("\(teaType.rawValue.capitalized) teas")) {
+                            ForEach(teas) { tea in
+                                VStack(alignment: .leading) {
+                                    Text(tea.name)
+                                        .font(.headline)
+                                    
+                                    let unit = tea.teaType.rawValue.lowercased() == "loose" ? "grams" : "bags"
+                                    Text("Stock: \(tea.amountStocked) \(unit)")
+                                    Text("Remain")
+                                }
                             }
                         }
                     }
                 }
             }
+            .navigationTitle("Stock")
         }
-        .navigationTitle("Stock")
     }
 }
 
