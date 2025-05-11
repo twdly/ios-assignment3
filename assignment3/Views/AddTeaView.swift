@@ -11,9 +11,13 @@ struct AddTeaView: View {
     @State private var name         = ""
     @State private var selectedType: TeaType = .black
     @State private var amountText   = ""
+    @State private var teaType: String = ""
     @State private var tempText     = ""
     @State private var timeText     = ""
+    @State private var descString    = ""
     @State private var urlString    = ""
+    @State private var stock: String = ""
+    @State private var useAmt: String = ""
 
     var body: some View {
         NavigationView {
@@ -21,22 +25,32 @@ struct AddTeaView: View {
                 Section("Tea Details") {
                     TextField("Name", text: $name)
 
-                    Picker("Type", selection: $selectedType) {
+                    Picker("Tea Category", selection: $selectedType) {
                         ForEach(TeaType.allCases, id: \.self) { t in
-                            Text(t.rawValue.capitalized)
+                            Text(t.rawValue.capitalized).tag(t)
                         }
                     }
                     .pickerStyle(.segmented)
+                    
+                    Picker("Tea Type", selection: $teaType) {
+                        ForEach(["Teabag", "Loose"], id: \.self) { type in
+                            Text(type).tag(type)
+                        }
+                    }
 
                     TextField("Water Amount (ml)", text: $amountText)
                         .keyboardType(.numberPad)
-
                     TextField("Water Temp (°C)", text: $tempText)
                         .keyboardType(.numberPad)
-
                     TextField("Steep Time (sec)", text: $timeText)
                         .keyboardType(.numberPad)
-
+                    TextField("Description", text: $descString)
+                        .keyboardType(.numberPad)
+                    TextField("Amount Stocked (grams or bags)", text: $stock)
+                        .keyboardType(.numberPad)
+                
+                    TextField("Amount used per brew", text: $useAmt)
+                        .keyboardType(.numberPad)
                     TextField("URL (optional)", text: $urlString)
                         .keyboardType(.URL)
                 }
@@ -44,12 +58,12 @@ struct AddTeaView: View {
                 Section {
                     Button("Save Tea") {
                         guard
-                            let amt  = Int(amountText),
-                            let tmp  = Int(tempText),
-                            let secs = Int(timeText)
-                        else {
-                            return
-                        }
+                            let amt = Int(amountText),
+                            let tmp = Int(tempText),
+                            let secs = Int(timeText),
+                            let stockAmt = Int(stock),
+                            let useAmt = Int(useAmt)
+                        else { return }
                         
                         teaDb.objectWillChange.send()
 
@@ -58,14 +72,20 @@ struct AddTeaView: View {
                         let newTea = TeaModel(
                             id: nextID,
                             name: name,
-                            type: selectedType,
+                            category: selectedType,
+                            teaType: teaType,
                             waterAmount: amt,
                             waterTemp: tmp,
                             time: secs,
-                            url: urlString.isEmpty ? nil : urlString
+                            url: urlString.isEmpty ? nil : urlString,
+                            description: descString,
+                            teaUsedPerBrew: useAmt,
+                            amountStocked: stockAmt
+                            
                         )
-                        teaDb.teas.append(newTea)
                         presentation.wrappedValue.dismiss()
+                        
+                        teaDb.addTea(newTea)
                     }
                     .disabled(name.isEmpty)
                 }

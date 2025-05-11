@@ -19,14 +19,21 @@ struct TeaListView: View {
     @State private var showingAdd = false
     var body: some View {
         NavigationStack {
-            List(TeaType.allCases, id: \.hashValue) { teaType in
-                if !teaDb.getBy(type: teaType).isEmpty {
-                    Section(header: Text("\(teaType.rawValue) teas")) {
-                        ForEach(teaDb.getBy(type: teaType)) { tea in
-                            TeaListRowView(tea: tea).swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                Button(role: .destructive, action: { delete(tea: tea) }) {
-                                    Label("Delete", systemImage: "trash")
-                                }
+            List {
+                ForEach(TeaType.allCases, id: \.self) { teaType in
+                    let teas = teaDb.getBy(category: teaType)
+                    
+                    if !teas.isEmpty {
+                        Section(header: Text("\(teaType.rawValue.capitalized) teas")) {
+                            ForEach(teas) { tea in
+                                TeaListRowView(tea: tea)
+                                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                        Button(role: .destructive) {
+                                            delete(tea: tea)
+                                        } label: {
+                                            Label("Delete", systemImage: "trash")
+                                        }
+                                    }
                             }
                         }
                     }

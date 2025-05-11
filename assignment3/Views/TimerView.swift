@@ -11,7 +11,7 @@ import UserNotifications
 struct TimerView: View {
     @EnvironmentObject var teaDb: TeaDb
     
-    @StateObject var tea: TeaModel
+    var tea: TeaModel
     @StateObject var timerViewModel: TimerViewModel = TimerViewModel()
     
     var body: some View {
@@ -27,6 +27,12 @@ struct TimerView: View {
                 }
                 HStack {
                     InfoPanelView(title: "Time", imageName: "clock", details: "\(tea.time) seconds", width: 140)
+                    InfoPanelView(
+                        title: "Tea Amount",
+                        imageName: "scalemass",
+                        details: "\(tea.teaUsedPerBrew) \(tea.teaType.lowercased() == "loose" ? "grams" : "bags")",
+                        width: 140
+                    )
                 }
                 Button(action: { timerViewModel.beginTimer(tea: tea, teaDb: teaDb) }) {
                     HStack {
@@ -60,6 +66,6 @@ struct TimerView: View {
 }
 
 #Preview {
-    let tea = TeaModel(id: 0, name: "Test", type: .oolong, waterAmount: 92, waterTemp: 92, time: 5, url: "https://example.com")
+    let tea = TeaModel(id: 0, name: "Test", category: .oolong, teaType: "Loose", waterAmount: 92, waterTemp: 92, time: 5, url: "https://example.com", description: "test", teaUsedPerBrew: 5, amountStocked: 200 )
     TimerView(tea: tea).environmentObject(TeaDb())
 }

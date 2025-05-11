@@ -14,7 +14,7 @@ struct RandomiserView: View {
     @State private var selectedTea: TeaModel? = nil
 
     var filteredTeas: [TeaModel] {
-        teaDb.teas.filter { $0.type == selectedType }
+        teaDb.teas.filter { $0.category == selectedType }
     }
 
     var body: some View {

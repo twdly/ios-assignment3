@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WriteReviewView: View {
-    @StateObject var tea: TeaModel
+    var tea: TeaModel
     
     @State var rating: Int = 0
     @State var reviewText: String = ""

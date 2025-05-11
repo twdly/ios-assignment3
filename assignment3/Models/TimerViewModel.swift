@@ -47,6 +47,7 @@ class TimerViewModel: ObservableObject {
         _ = timer?.connect()
         timerMessage = "Steeping"
         schedulateNotification(tea: tea)
+        teaDb.brewTea(id: tea.id)
     }
     
     func onTimer(tea: TeaModel) {

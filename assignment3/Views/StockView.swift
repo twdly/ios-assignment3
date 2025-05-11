@@ -8,11 +8,33 @@
 import SwiftUI
 
 struct StockView: View {
+    @EnvironmentObject var teaDb: TeaDb
+    @State private var showingAdd = false
+
     var body: some View {
-        Text("Stock")
+        List {
+            ForEach(TeaType.allCases, id: \.self) { teaType in
+                let teas = teaDb.getBy(category: teaType)
+
+                if !teas.isEmpty {
+                    Section(header: Text("\(teaType.rawValue.capitalized) teas")) {
+                        ForEach(teas) { tea in
+                            VStack(alignment: .leading) {
+                                Text(tea.name)
+                                    .font(.headline)
+                                
+                                let unit = tea.teaType.lowercased() == "loose" ? "grams" : "bags"
+                                Text("Stock: \(tea.amountStocked) \(unit)")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .navigationTitle("Stock")
     }
 }
 
 #Preview {
-    StockView()
+    StockView().environmentObject(TeaDb())
 }

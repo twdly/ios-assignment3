@@ -18,26 +18,41 @@ struct EditTeaView: View {
     @State private var amountText: String = ""
     @State private var tempText: String = ""
     @State private var timeText: String = ""
+    @State private var descString: String = ""
+    @State private var teaType: String = ""
     @State private var urlString: String = ""
-
+    @State private var stock: String = ""
+    @State private var useAmt: String = ""
+    
     var body: some View {
         NavigationView {
             Form {
                 Section("Tea Details") {
                     TextField("Name", text: $name)
 
-                    Picker("Type", selection: $selectedType) {
+                    Picker("Tea Category", selection: $selectedType) {
                         ForEach(TeaType.allCases, id: \.self) { t in
                             Text(t.rawValue.capitalized).tag(t)
                         }
                     }
                     .pickerStyle(.segmented)
+                    
+                    Picker("Tea Type", selection: $teaType) {
+                        ForEach(["Teabag", "Loose"], id: \.self) { type in
+                            Text(type).tag(type)
+                        }
+                    }
 
                     TextField("Water Amount (ml)", text: $amountText)
                         .keyboardType(.numberPad)
                     TextField("Water Temp (°C)", text: $tempText)
                         .keyboardType(.numberPad)
                     TextField("Steep Time (sec)", text: $timeText)
+                        .keyboardType(.numberPad)
+                    TextField("Description", text: $descString)
+                    TextField("Amount Stocked (grams or bags)", text: $stock)
+                        .keyboardType(.numberPad)
+                    TextField("Amount used per brew", text: $useAmt)
                         .keyboardType(.numberPad)
                     TextField("URL (optional)", text: $urlString)
                         .keyboardType(.URL)
@@ -48,7 +63,9 @@ struct EditTeaView: View {
                         guard
                             let amt = Int(amountText),
                             let tmp = Int(tempText),
-                            let secs = Int(timeText)
+                            let secs = Int(timeText),
+                            let stockAmt = Int(stock),
+                            let usedAmt = Int(useAmt)
                         else { return }
 
                         teaDb.objectWillChange.send()
@@ -57,11 +74,15 @@ struct EditTeaView: View {
                             teaDb.teas[idx] = TeaModel(
                                 id: originalTea.id,
                                 name: name,
-                                type: selectedType,
+                                category: selectedType,
+                                teaType: teaType,
                                 waterAmount: amt,
                                 waterTemp: tmp,
                                 time: secs,
-                                url: urlString.isEmpty ? nil : urlString
+                                url: urlString.isEmpty ? nil : urlString,
+                                description: descString,
+                                teaUsedPerBrew: usedAmt,
+                                amountStocked: stockAmt
                             )
                         }
 
@@ -73,7 +94,22 @@ struct EditTeaView: View {
             .navigationTitle("Edit Tea")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        presentation.wrappedValue.dismiss()
+                    }
                 }
+            }
+            .onAppear {
+                name = originalTea.name
+                selectedType = originalTea.category
+                amountText = String(originalTea.waterAmount)
+                tempText = String(originalTea.waterTemp)
+                timeText = String(originalTea.time)
+                descString = originalTea.description
+                teaType = originalTea.teaType
+                urlString = originalTea.url ?? ""
+                stock = String(originalTea.amountStocked)
+                useAmt = String(originalTea.teaUsedPerBrew)
             }
         }
     }
@@ -82,12 +118,16 @@ struct EditTeaView: View {
 #Preview {
     EditTeaView(originalTea: TeaModel(
         id: 0,
-        name: "",
-        type: .black,
-        waterAmount: 0,
-        waterTemp: 0,
-        time: 0,
-        url: nil
+        name: "Sample Tea",
+        category: .black,
+        teaType: "Loose",
+        waterAmount: 250,
+        waterTemp: 100,
+        time: 180,
+        url: "https://example.com",
+        description: "Sample description",
+        teaUsedPerBrew: 2,
+        amountStocked: 100
     ))
     .environmentObject(TeaDb())
 }
