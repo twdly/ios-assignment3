@@ -53,16 +53,13 @@ struct EditTeaView: View {
 
                         teaDb.objectWillChange.send()
 
-                        if let idx = teaDb.teas.firstIndex(where: { $0.id == originalTea.id }) {
-                            teaDb.teas[idx] = TeaModel(
-                                id: originalTea.id,
-                                name: name,
-                                type: selectedType,
-                                waterAmount: amt,
-                                waterTemp: tmp,
-                                time: secs,
-                                url: urlString.isEmpty ? nil : urlString
-                            )
+                        if let model = teaDb.teas.first(where: { $0.id == originalTea.id }) {
+                            model.name        = name
+                            model.type        = selectedType
+                            model.waterAmount = amt
+                            model.waterTemp   = tmp
+                            model.time        = secs
+                            model.url         = urlString.isEmpty ? nil : urlString
                         }
 
                         presentation.wrappedValue.dismiss()
