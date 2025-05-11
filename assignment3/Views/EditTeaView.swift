@@ -73,10 +73,9 @@ struct EditTeaView: View {
                         
                         teaDb.objectWillChange.send()
 
-                        let nextID = (teaDb.teas.map(\.id).max() ?? -1) + 1
 
                         let newTea = TeaModel(
-                            id: nextID,
+                            id: originalTea.id,
                             name: name,
                             category: selectedType,
                             teaType: teaType,

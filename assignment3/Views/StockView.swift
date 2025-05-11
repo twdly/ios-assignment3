@@ -25,6 +25,7 @@ struct StockView: View {
                                 
                                 let unit = tea.teaType.rawValue.lowercased() == "loose" ? "grams" : "bags"
                                 Text("Stock: \(tea.amountStocked) \(unit)")
+                                Text("Remain")
                             }
                         }
                     }
