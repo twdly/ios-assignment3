@@ -27,6 +27,9 @@ struct RandomiserView: View {
                 }
                 .pickerStyle(.segmented)
                 .padding()
+                .onChange(of: selectedType) {
+                    selectedTea = nil
+                }
 
                 Button("Pick a Random Tea") {
                     if let random = filteredTeas.randomElement() {
