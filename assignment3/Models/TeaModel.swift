@@ -7,14 +7,14 @@
 
 import Foundation
 
-class TeaModel: Identifiable, Codable, ObservableObject {
+class TeaModel: Identifiable, ObservableObject {
     let id: Int
-    let name: String
-    let type: TeaType
-    let waterAmount: Int
-    let waterTemp: Int
-    let time: Int
-    let url: String?
+    @Published var name: String
+    @Published var type: TeaType
+    @Published var waterAmount: Int
+    @Published var waterTemp: Int
+    @Published var time: Int
+    @Published var url: String?
     
     init(id: Int, name: String, type: TeaType, waterAmount: Int, waterTemp: Int, time: Int, url: String?) {
         self.id = id

@@ -75,6 +75,14 @@ struct EditTeaView: View {
                 ToolbarItem(placement: .cancellationAction) {
                 }
             }
+            .onAppear {
+                name = originalTea.name
+                selectedType = originalTea.type
+                amountText = String(originalTea.waterAmount)
+                tempText = String(originalTea.waterTemp)
+                timeText = String(originalTea.time)
+                urlString = originalTea.url ?? ""
+            }
         }
     }
 }
