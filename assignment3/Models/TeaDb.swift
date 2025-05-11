@@ -32,6 +32,7 @@ class TeaDb: ObservableObject {
     func addTea(_ tea: TeaModel) {
         teas.append(tea)
         saveTeas(teas)
+        teas = loadTeas()
     }
 
     //update a tea that already exists in database
@@ -39,6 +40,7 @@ class TeaDb: ObservableObject {
         if let index = teas.firstIndex(where: { $0.id == tea.id }) {
             teas[index] = tea
             saveTeas(teas)
+            teas = loadTeas()
         }
     }
 
@@ -46,6 +48,7 @@ class TeaDb: ObservableObject {
     func deleteTea(id: Int) {
         teas.removeAll { $0.id == id }
         saveTeas(teas)
+        teas = loadTeas()
     }
     
     //brew a tea and update the qunatity stocked
