@@ -91,7 +91,7 @@ struct EditTeaView: View {
                         )
                         presentation.wrappedValue.dismiss()
                         
-                        teaDb.addTea(newTea)
+                        teaDb.updateTea(newTea)
                     }
                     .disabled(name.isEmpty)
                 }
