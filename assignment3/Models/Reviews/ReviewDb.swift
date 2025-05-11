@@ -17,7 +17,10 @@ class ReviewDb: ObservableObject {
         request.httpMethod = "GET"
         do {
             let result = try await URLSession.shared.data(for: request)
-            reviews = try JSONDecoder().decode([ReviewModel].self, from: result.0)
+            let decodedReviews = try JSONDecoder().decode([ReviewModel].self, from: result.0)
+            await MainActor.run {
+                reviews = decodedReviews
+            }
             return ""
         } catch {
             return "Something went wrong, please try again later"
