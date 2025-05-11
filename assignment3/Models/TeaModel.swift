@@ -10,8 +10,8 @@ import Foundation
 struct TeaModel: Identifiable, Codable, Hashable {
     let id: Int
     let name: String
-    let category: TeaType
-    let teaType: String
+    let category: TeaCategory
+    let teaType: TeaType
     let waterAmount: Int
     let waterTemp: Int
     let time: Int

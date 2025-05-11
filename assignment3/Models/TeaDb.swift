@@ -24,7 +24,7 @@ class TeaDb: ObservableObject {
         teas.first { $0.id == id }
     }
     //get tea information (by model)
-    func getBy(category: TeaType) -> [TeaModel] {
+    func getBy(category: TeaCategory) -> [TeaModel] {
         teas.filter { $0.category == category }
     }
     

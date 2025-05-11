@@ -13,7 +13,7 @@ struct StockView: View {
 
     var body: some View {
         List {
-            ForEach(TeaType.allCases, id: \.self) { teaType in
+            ForEach(TeaCategory.allCases, id: \.self) { teaType in
                 let teas = teaDb.getBy(category: teaType)
 
                 if !teas.isEmpty {
@@ -23,7 +23,7 @@ struct StockView: View {
                                 Text(tea.name)
                                     .font(.headline)
                                 
-                                let unit = tea.teaType.lowercased() == "loose" ? "grams" : "bags"
+                                let unit = tea.teaType.rawValue.lowercased() == "loose" ? "grams" : "bags"
                                 Text("Stock: \(tea.amountStocked) \(unit)")
                             }
                         }

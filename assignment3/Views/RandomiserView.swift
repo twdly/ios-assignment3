@@ -10,7 +10,7 @@ import SwiftUI
 struct RandomiserView: View {
     @EnvironmentObject var teaDb: TeaDb
 
-    @State private var selectedType: TeaType = .green
+    @State private var selectedType: TeaCategory = .green
     @State private var selectedTea: TeaModel? = nil
 
     var filteredTeas: [TeaModel] {
@@ -21,7 +21,7 @@ struct RandomiserView: View {
         NavigationStack {
             VStack(spacing: 20) {
                 Picker("Select Tea Type", selection: $selectedType) {
-                    ForEach(TeaType.allCases, id: \.self) { type in
+                    ForEach(TeaCategory.allCases, id: \.self) { type in
                         Text(type.rawValue.capitalized)
                     }
                 }

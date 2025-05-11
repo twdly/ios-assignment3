@@ -14,12 +14,12 @@ struct EditTeaView: View {
     let originalTea: TeaModel
     
     @State private var name: String = ""
-    @State private var selectedType: TeaType = .black
+    @State private var selectedType: TeaCategory = .black
     @State private var amountText: String = ""
     @State private var tempText: String = ""
     @State private var timeText: String = ""
     @State private var descString: String = ""
-    @State private var teaType: String = ""
+    @State private var teaType: TeaType = .Loose
     @State private var urlString: String = ""
     @State private var stock: String = ""
     @State private var useAmt: String = ""
@@ -31,7 +31,7 @@ struct EditTeaView: View {
                     TextField("Name", text: $name)
 
                     Picker("Tea Category", selection: $selectedType) {
-                        ForEach(TeaType.allCases, id: \.self) { t in
+                        ForEach(TeaCategory.allCases, id: \.self) { t in
                             Text(t.rawValue.capitalized).tag(t)
                         }
                     }
@@ -120,7 +120,7 @@ struct EditTeaView: View {
         id: 0,
         name: "Sample Tea",
         category: .black,
-        teaType: "Loose",
+        teaType: .Loose,
         waterAmount: 250,
         waterTemp: 100,
         time: 180,

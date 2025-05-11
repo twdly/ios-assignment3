@@ -10,5 +10,4 @@ import Foundation
 enum TeaType: String, Codable, CaseIterable {
     case Bag
     case Loose
-
 }

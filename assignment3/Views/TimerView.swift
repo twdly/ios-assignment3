@@ -30,7 +30,7 @@ struct TimerView: View {
                     InfoPanelView(
                         title: "Tea Amount",
                         imageName: "scalemass",
-                        details: "\(tea.teaUsedPerBrew) \(tea.teaType.lowercased() == "loose" ? "grams" : "bags")",
+                        details: "\(tea.teaUsedPerBrew) \(tea.teaType == .Loose ? "Grams" : "Bags")",
                         width: 140
                     )
                 }
@@ -66,6 +66,6 @@ struct TimerView: View {
 }
 
 #Preview {
-    let tea = TeaModel(id: 0, name: "Test", category: .oolong, teaType: "Loose", waterAmount: 92, waterTemp: 92, time: 5, url: "https://example.com", description: "test", teaUsedPerBrew: 5, amountStocked: 200 )
+    let tea = TeaModel(id: 0, name: "Test", category: .oolong, teaType: .Loose, waterAmount: 92, waterTemp: 92, time: 5, url: "https://example.com", description: "test", teaUsedPerBrew: 5, amountStocked: 200 )
     TimerView(tea: tea).environmentObject(TeaDb())
 }

@@ -8,10 +8,10 @@ import SwiftUI
 struct AddTeaView: View {
     @EnvironmentObject private var teaDb: TeaDb
     @Environment(\.presentationMode) private var presentation
-    @State private var name         = ""
-    @State private var selectedType: TeaType = .black
+    @State private var name : String        = ""
+    @State private var selectedType: TeaCategory = .black
     @State private var amountText   = ""
-    @State private var teaType: String = ""
+    @State private var teaType: TeaType = .Loose
     @State private var tempText     = ""
     @State private var timeText     = ""
     @State private var descString    = ""
@@ -26,17 +26,18 @@ struct AddTeaView: View {
                     TextField("Name", text: $name)
 
                     Picker("Tea Category", selection: $selectedType) {
-                        ForEach(TeaType.allCases, id: \.self) { t in
+                        ForEach(TeaCategory.allCases, id: \.self) { t in
                             Text(t.rawValue.capitalized).tag(t)
                         }
                     }
                     .pickerStyle(.segmented)
                     
                     Picker("Tea Type", selection: $teaType) {
-                        ForEach(["Teabag", "Loose"], id: \.self) { type in
-                            Text(type).tag(type)
+                        ForEach(TeaType.allCases, id: \.self) { t in
+                            Text(t.rawValue.capitalized).tag(t)
                         }
                     }
+                    .pickerStyle(.segmented)
 
                     TextField("Water Amount (ml)", text: $amountText)
                         .keyboardType(.numberPad)

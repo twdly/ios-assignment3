@@ -20,7 +20,7 @@ struct TeaListView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(TeaType.allCases, id: \.self) { teaType in
+                ForEach(TeaCategory.allCases, id: \.self) { teaType in
                     let teas = teaDb.getBy(category: teaType)
                     
                     if !teas.isEmpty {
