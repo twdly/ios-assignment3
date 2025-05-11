@@ -27,13 +27,13 @@ struct TeaListView: View {
                         Section(header: Text("\(teaType.rawValue.capitalized) teas")) {
                             ForEach(teas) { tea in
                                 TeaListRowView(tea: tea)
-                                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                        Button(role: .destructive) {
-                                            delete(tea: tea)
-                                        } label: {
-                                            Label("Delete", systemImage: "trash")
-                                        }
+                                .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                    Button(role: .destructive) {
+                                        delete(tea: tea)
+                                    } label: {
+                                        Label("Delete", systemImage: "trash")
                                     }
+                                }
                             }
                         }
                     }
