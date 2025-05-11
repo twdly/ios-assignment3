@@ -1,0 +1,62 @@
+[
+  {
+    "id": 0,
+    "name": "English Caramel",
+    "type": "black",
+    "waterAmount": 250,
+    "waterTemp": 100,
+    "time": 180,
+    "url": "https://www.lupicia.com.au/22/black-tea-flavoured/194/english-caramel",
+    "isFavorite": true,
+    "isFeatured": true,
+    "description": "A rich, dessert-like black tea with smooth caramel aroma."
+  },
+  {
+    "id": 1,
+    "name": "Spices",
+    "type": "black",
+    "waterAmount": 250,
+    "waterTemp": 100,
+    "time": 180,
+    "url": "https://www.lupicia.com.au/22/black-tea-flavoured/195/spices-chai-style",
+    "isFavorite": false,
+    "isFeatured": false,
+    "description": "A chai-style black tea blend with bold spices and a warming flavor."
+  },
+  {
+    "id": 2,
+    "name": "Sencha Chiran",
+    "type": "green",
+    "waterAmount": 250,
+    "waterTemp": 60,
+    "time": 60,
+    "url": "https://www.lupicia.com.au/17/japanese-green-tea/75/sencha-chiran",
+    "isFavorite": true,
+    "isFeatured": false,
+    "description": "A premium Japanese green tea with a light grassy flavor and umami depth."
+  },
+  {
+    "id": 3,
+    "name": "Momo Oolong",
+    "type": "oolong",
+    "waterAmount": 250,
+    "waterTemp": 100,
+    "time": 180,
+    "url": "https://www.lupicia.com.au/178/momo-oolong-collection/99/momo-oolong-super-grade",
+    "isFavorite": false,
+    "isFeatured": true,
+    "description": "An aromatic oolong tea with the sweet fragrance of white peaches."
+  },
+  {
+    "id": 4,
+    "name": "Speed tea",
+    "type": "green",
+    "waterAmount": 0,
+    "waterTemp": 25,
+    "time": 5,
+    "url": "https://example.com",
+    "isFavorite": false,
+    "isFeatured": false,
+    "description": "A cold-steeped green tea for when you're in a hurry."
+  }
+]
