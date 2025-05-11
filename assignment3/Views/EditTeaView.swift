@@ -38,10 +38,11 @@ struct EditTeaView: View {
                     .pickerStyle(.segmented)
                     
                     Picker("Tea Type", selection: $teaType) {
-                        ForEach(["Teabag", "Loose"], id: \.self) { type in
-                            Text(type).tag(type)
+                        ForEach(TeaType.allCases, id: \.self) { t in
+                            Text(t.rawValue.capitalized).tag(t)
                         }
                     }
+                    .pickerStyle(.segmented)
 
                     TextField("Water Amount (ml)", text: $amountText)
                         .keyboardType(.numberPad)
@@ -50,8 +51,10 @@ struct EditTeaView: View {
                     TextField("Steep Time (sec)", text: $timeText)
                         .keyboardType(.numberPad)
                     TextField("Description", text: $descString)
+                        .keyboardType(.numberPad)
                     TextField("Amount Stocked (grams or bags)", text: $stock)
                         .keyboardType(.numberPad)
+                
                     TextField("Amount used per brew", text: $useAmt)
                         .keyboardType(.numberPad)
                     TextField("URL (optional)", text: $urlString)
@@ -59,46 +62,41 @@ struct EditTeaView: View {
                 }
 
                 Section {
-                    Button("Save Changes") {
+                    Button("Save Tea") {
                         guard
                             let amt = Int(amountText),
                             let tmp = Int(tempText),
                             let secs = Int(timeText),
                             let stockAmt = Int(stock),
-                            let usedAmt = Int(useAmt)
+                            let useAmt = Int(useAmt)
                         else { return }
-
+                        
                         teaDb.objectWillChange.send()
 
-                        if let idx = teaDb.teas.firstIndex(where: { $0.id == originalTea.id }) {
-                            teaDb.teas[idx] = TeaModel(
-                                id: originalTea.id,
-                                name: name,
-                                category: selectedType,
-                                teaType: teaType,
-                                waterAmount: amt,
-                                waterTemp: tmp,
-                                time: secs,
-                                url: urlString.isEmpty ? nil : urlString,
-                                description: descString,
-                                teaUsedPerBrew: usedAmt,
-                                amountStocked: stockAmt
-                            )
-                        }
+                        let nextID = (teaDb.teas.map(\.id).max() ?? -1) + 1
 
+                        let newTea = TeaModel(
+                            id: nextID,
+                            name: name,
+                            category: selectedType,
+                            teaType: teaType,
+                            waterAmount: amt,
+                            waterTemp: tmp,
+                            time: secs,
+                            url: urlString.isEmpty ? nil : urlString,
+                            description: descString,
+                            teaUsedPerBrew: useAmt,
+                            amountStocked: stockAmt
+                            
+                        )
                         presentation.wrappedValue.dismiss()
+                        
+                        teaDb.addTea(newTea)
                     }
                     .disabled(name.isEmpty)
                 }
             }
             .navigationTitle("Edit Tea")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        presentation.wrappedValue.dismiss()
-                    }
-                }
-            }
             .onAppear {
                 name = originalTea.name
                 selectedType = originalTea.category

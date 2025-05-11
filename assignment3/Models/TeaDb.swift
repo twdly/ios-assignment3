@@ -85,8 +85,8 @@ func copyTeasToDocumentsIfNeeded() {
     if let bundleURL = Bundle.main.url(forResource: "TeaData", withExtension: "json") {
         do {
             if fileManager.fileExists(atPath: destURL.path) {
-                try fileManager.removeItem(at: destURL)
-                print("🗑️ Removed old TeaData.json")
+                //try fileManager.removeItem(at: destURL)
+                //print("🗑️ Removed old TeaData.json")
             }
             try fileManager.copyItem(at: bundleURL, to: destURL)
             print("✅ Copied fresh TeaData.json to Documents")
