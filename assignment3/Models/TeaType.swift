@@ -8,9 +8,7 @@
 import Foundation
 
 enum TeaType: String, Codable, CaseIterable {
-    case black
-    case green
-    case white
-    case oolong
-    case other
+    case Bag
+    case Loose
+
 }
