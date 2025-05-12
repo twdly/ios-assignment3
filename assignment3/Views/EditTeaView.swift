@@ -26,9 +26,14 @@ struct EditTeaView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section("Tea Details") {
-                    TextField("Name", text: $name)
-
+                Section(header: Text("🍵 Tea Details")) {
+                    // Tea Name
+                    HStack {
+                        Text("🫖")
+                        TextField("Name", text: $name)
+                    }
+                    
+                    // Tea Category
                     Picker("Tea Category", selection: $selectedType) {
                         ForEach(TeaCategory.allCases, id: \.self) { t in
                             Text(t.rawValue.capitalized).tag(t)
@@ -36,6 +41,7 @@ struct EditTeaView: View {
                     }
                     .pickerStyle(.segmented)
                     
+                    // Tea Type (Bag or Loose)
                     Picker("Tea Type", selection: $teaType) {
                         ForEach(TeaType.allCases, id: \.self) { t in
                             Text(t.rawValue.capitalized).tag(t)
@@ -43,23 +49,42 @@ struct EditTeaView: View {
                     }
                     .pickerStyle(.segmented)
 
-                    TextField("Water Amount (ml)", text: $amountText)
-                        .keyboardType(.numberPad)
-                    TextField("Water Temp (°C)", text: $tempText)
-                        .keyboardType(.numberPad)
-                    TextField("Steep Time (sec)", text: $timeText)
-                        .keyboardType(.numberPad)
-                    TextField("Amount Stocked (grams or bags)", text: $stock)
-                        .keyboardType(.numberPad)
+                    HStack {
+                        Text("💧")
+                        TextField("Water Amount (ml)", text: $amountText)
+                            .keyboardType(.numberPad)
+                    }
+                    HStack {
+                        Text("🌡️")
+                        TextField("Water Temp (°C)", text: $tempText)
+                            .keyboardType(.numberPad)
+                    }
+                    HStack {
+                        Text("⏱️")
+                        TextField("Steep Time (sec)", text: $timeText)
+                            .keyboardType(.numberPad)
+                    }
+                    HStack {
+                        Text("📦")
+                        TextField("Amount Stocked (grams or bags)", text: $stock)
+                            .keyboardType(.numberPad)
+                    }
                 
-                    TextField("Amount used per brew", text: $useAmt)
-                        .keyboardType(.numberPad)
-                    TextField("URL (optional)", text: $urlString)
-                        .keyboardType(.URL)
+                    HStack {
+                        Text("📏")
+                        TextField("Amount used per brew", text: $useAmt)
+                            .keyboardType(.numberPad)
+                    }
+                    HStack {
+                        Text("🔗")
+                        TextField("URL (optional)", text: $urlString)
+                            .keyboardType(.URL)
+                    }
                 }
 
                 Section {
                     Button("Save Tea") {
+                        // Validate that all required inputs are valid integers
                         guard
                             let amt = Int(amountText),
                             let tmp = Int(tempText),
@@ -68,9 +93,10 @@ struct EditTeaView: View {
                             let useAmt = Int(useAmt)
                         else { return }
                         
+                        // Notify SwiftUI that TeaDb is about to change
                         teaDb.objectWillChange.send()
 
-
+                        // Create a new TeaModel with the same ID to update the existing tea
                         let newTea = TeaModel(
                             id: originalTea.id,
                             name: name,
@@ -84,8 +110,9 @@ struct EditTeaView: View {
                             amountStocked: stockAmt
                             
                         )
+                        // Dismiss the edit view
                         presentation.wrappedValue.dismiss()
-                        
+                        // Call updateTea to apply changes to the tea list
                         teaDb.updateTea(newTea)
                     }
                     .disabled(name.isEmpty)
@@ -93,6 +120,7 @@ struct EditTeaView: View {
             }
             .navigationTitle("Edit Tea")
             .onAppear {
+                // Pre-fill form fields with original tea data when the view appears
                 name = originalTea.name
                 selectedType = originalTea.category
                 amountText = String(originalTea.waterAmount)
