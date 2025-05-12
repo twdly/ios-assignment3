@@ -18,7 +18,6 @@ struct EditTeaView: View {
     @State private var amountText: String = ""
     @State private var tempText: String = ""
     @State private var timeText: String = ""
-    @State private var descString: String = ""
     @State private var teaType: TeaType = .Loose
     @State private var urlString: String = ""
     @State private var stock: String = ""
@@ -49,8 +48,6 @@ struct EditTeaView: View {
                     TextField("Water Temp (°C)", text: $tempText)
                         .keyboardType(.numberPad)
                     TextField("Steep Time (sec)", text: $timeText)
-                        .keyboardType(.numberPad)
-                    TextField("Description", text: $descString)
                         .keyboardType(.numberPad)
                     TextField("Amount Stocked (grams or bags)", text: $stock)
                         .keyboardType(.numberPad)
@@ -83,7 +80,6 @@ struct EditTeaView: View {
                             waterTemp: tmp,
                             time: secs,
                             url: urlString.isEmpty ? nil : urlString,
-                            description: descString,
                             teaUsedPerBrew: useAmt,
                             amountStocked: stockAmt
                             
@@ -102,7 +98,6 @@ struct EditTeaView: View {
                 amountText = String(originalTea.waterAmount)
                 tempText = String(originalTea.waterTemp)
                 timeText = String(originalTea.time)
-                descString = originalTea.description
                 teaType = originalTea.teaType
                 urlString = originalTea.url ?? ""
                 stock = String(originalTea.amountStocked)
@@ -122,7 +117,6 @@ struct EditTeaView: View {
         waterTemp: 100,
         time: 180,
         url: "https://example.com",
-        description: "Sample description",
         teaUsedPerBrew: 2,
         amountStocked: 100
     ))

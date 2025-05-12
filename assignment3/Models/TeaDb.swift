@@ -43,6 +43,10 @@ class TeaDb: ObservableObject {
             teas = loadTeas()
         }
     }
+    
+    func calculateRemainingCups(_ tea: TeaModel) -> (Int) {
+        return Int(tea.amountStocked/tea.teaUsedPerBrew)
+    }
 
     //delete a tea from the database
     func deleteTea(id: Int) {
@@ -63,7 +67,8 @@ class TeaDb: ObservableObject {
     
     func restockTea(id: Int, amount: Int) {
         if let index = teas.firstIndex(where: { $0.id == id }) {
-            teas[index].amountStocked += amount
+            
+            teas[index].amountStocked = max(amount, 0)
             saveTeas(teas)
         }
     }

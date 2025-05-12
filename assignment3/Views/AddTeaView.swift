@@ -14,7 +14,6 @@ struct AddTeaView: View {
     @State private var teaType: TeaType = .Loose
     @State private var tempText     = ""
     @State private var timeText     = ""
-    @State private var descString    = ""
     @State private var urlString    = ""
     @State private var stock: String = ""
     @State private var useAmt: String = ""
@@ -44,8 +43,6 @@ struct AddTeaView: View {
                     TextField("Water Temp (°C)", text: $tempText)
                         .keyboardType(.numberPad)
                     TextField("Steep Time (sec)", text: $timeText)
-                        .keyboardType(.numberPad)
-                    TextField("Description", text: $descString)
                         .keyboardType(.numberPad)
                     TextField("Amount Stocked (grams or bags)", text: $stock)
                         .keyboardType(.numberPad)
@@ -79,7 +76,6 @@ struct AddTeaView: View {
                             waterTemp: tmp,
                             time: secs,
                             url: urlString.isEmpty ? nil : urlString,
-                            description: descString,
                             teaUsedPerBrew: useAmt,
                             amountStocked: stockAmt
                             

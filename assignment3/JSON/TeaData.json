@@ -8,7 +8,6 @@
     "waterTemp": 100,
     "time": 180,
     "url": "https://www.lupicia.com.au/22/black-tea-flavoured/194/english-caramel",
-    "description": "A rich, dessert-like black tea with smooth caramel aroma.",
     "amountStocked": 10,
     "teaUsedPerBrew": 1
   },
@@ -21,7 +20,6 @@
     "waterTemp": 100,
     "time": 180,
     "url": "https://www.lupicia.com.au/22/black-tea-flavoured/195/spices-chai-style",
-    "description": "A chai-style black tea blend with bold spices and a warming flavor.",
     "amountStocked": 100,
     "teaUsedPerBrew": 2
   },
@@ -34,7 +32,6 @@
     "waterTemp": 60,
     "time": 60,
     "url": "https://www.lupicia.com.au/17/japanese-green-tea/75/sencha-chiran",
-    "description": "A premium Japanese green tea with a light grassy flavor and umami depth.",
     "amountStocked": 100,
     "teaUsedPerBrew": 2
   },
@@ -47,7 +44,6 @@
     "waterTemp": 100,
     "time": 180,
     "url": "https://www.lupicia.com.au/178/momo-oolong-collection/99/momo-oolong-super-grade",
-    "description": "An aromatic oolong tea with the sweet fragrance of white peaches.",
     "amountStocked": 100,
     "teaUsedPerBrew": 2
   },
@@ -60,7 +56,6 @@
     "waterTemp": 25,
     "time": 5,
     "url": "https://example.com",
-    "description": "A cold-steeped green tea for when you're in a hurry.",
     "amountStocked": 100,
     "teaUsedPerBrew": 2
   }

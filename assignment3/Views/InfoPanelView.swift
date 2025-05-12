@@ -9,6 +9,7 @@ import SwiftUI
 
 struct InfoPanelView: View {
     let title: String
+    let textColor: Color?
     let imageName: String
     let details: String
     let width: Int
@@ -19,7 +20,8 @@ struct InfoPanelView: View {
                 Image(systemName: imageName)
                 Text(title)
             }
-            Text(details).padding(.top)
+            if textColor == Color.red { Text(details).padding(.top).foregroundStyle(.red)
+            }else{ Text(details).padding(.top) }
         }
         .frame(width: CGFloat(width), height: 80)
         .padding()
@@ -28,5 +30,5 @@ struct InfoPanelView: View {
 }
 
 #Preview {
-    InfoPanelView(title: "Temperature", imageName: "thermometer", details: "92°C", width: 140)
+    InfoPanelView(title: "Temperature", textColor: nil, imageName: "thermometer", details: "92°C", width: 140)
 }

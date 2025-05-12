@@ -9,25 +9,30 @@ import SwiftUI
 
 struct StockView: View {
     @EnvironmentObject var teaDb: TeaDb
-    @State private var showingAdd = false
+    @StateObject private var viewModel = StockViewModel()
 
     var body: some View {
-        NavigationStack{
+        NavigationStack {
             List {
                 ForEach(TeaCategory.allCases, id: \.self) { teaType in
-                    let teas = teaDb.getBy(category: teaType)
-                    
+                    let teas = viewModel.teas(for: teaType, using: teaDb)
                     if !teas.isEmpty {
                         Section(header: Text("\(teaType.rawValue.capitalized) teas")) {
                             ForEach(teas) { tea in
-                                VStack(alignment: .leading) {
-                                    Text(tea.name)
-                                        .font(.headline)
-                                    
-                                    let unit = tea.teaType.rawValue.lowercased() == "loose" ? "grams" : "bags"
-                                    Text("Stock: \(tea.amountStocked) \(unit)")
-                                    Text("Remain")
-                                }
+                                StockItemView(
+                                    tea: tea,
+                                    isEditing: viewModel.isEditing(tea),
+                                    tempStock: viewModel.tempStockValues[tea.id] ?? tea.amountStocked,
+                                    onEditToggle: {
+                                        viewModel.toggleEditing(for: tea)
+                                    },
+                                    onStockChange: { newValue in
+                                        viewModel.updateTempStock(for: tea, to: newValue)
+                                    },
+                                    onSave: {
+                                        viewModel.saveStock(for: tea, using: teaDb)
+                                    }
+                                )
                             }
                         }
                     }
@@ -36,8 +41,4 @@ struct StockView: View {
             .navigationTitle("Stock")
         }
     }
-}
-
-#Preview {
-    StockView().environmentObject(TeaDb())
 }

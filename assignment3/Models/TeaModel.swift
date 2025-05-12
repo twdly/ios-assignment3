@@ -16,7 +16,6 @@ struct TeaModel: Identifiable, Codable, Hashable {
     let waterTemp: Int
     let time: Int
     let url: String?
-    let description: String
     let teaUsedPerBrew: Int
     var amountStocked: Int
 }

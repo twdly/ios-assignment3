@@ -19,21 +19,27 @@ struct TimerView: View {
             Spacer()
 
             if timerViewModel.showTimer || timerViewModel.remainingTime > 1 {
-                InfoPanelView(title: "Remaining time", imageName: "cup.and.saucer", details: timerViewModel.getFormattedTime(), width: 180)
+                InfoPanelView(title: "Remaining time",textColor: nil, imageName: "cup.and.saucer", details: timerViewModel.getFormattedTime(), width: 180)
             } else {
                 HStack {
-                    InfoPanelView(title: "Water temp.", imageName: "thermometer", details: "\(tea.waterTemp)ºC", width: 140)
-                    InfoPanelView(title: "Water amount", imageName: "drop", details: "\(tea.waterAmount) mL", width: 140)
+                    InfoPanelView(title: "Water temp.", textColor: nil, imageName: "thermometer", details: "\(tea.waterTemp)ºC", width: 140)
+                    InfoPanelView(title: "Water amount", textColor: nil, imageName: "drop", details: "\(tea.waterAmount) mL", width: 140)
                 }
                 HStack {
-                    InfoPanelView(title: "Time", imageName: "clock", details: "\(tea.time) seconds", width: 140)
+                    InfoPanelView(title: "Time",textColor: nil, imageName: "clock", details: "\(tea.time) seconds", width: 140)
                     InfoPanelView(
-                        title: "Tea Amount",
+                        title: "Tea Amount", textColor: nil,
                         imageName: "scalemass",
                         details: "\(tea.teaUsedPerBrew) \(tea.teaType == .Loose ? "Grams" : "Bags")",
                         width: 140
                     )
                 }
+                if (teaDb.calculateRemainingCups(tea) < 5){
+                    InfoPanelView(title: "Remaining", textColor: .red, imageName: "mug.fill", details: "\(teaDb.calculateRemainingCups(tea)) Cups", width:300)
+                }else{
+                    InfoPanelView(title: "Remaining", textColor: nil, imageName: "mug.fill", details: "\(teaDb.calculateRemainingCups(tea)) Cups", width:300)
+                }
+               
                 Button(action: { timerViewModel.beginTimer(tea: tea, teaDb: teaDb) }) {
                     HStack {
                         Image(systemName: "play.circle.fill")
@@ -66,6 +72,6 @@ struct TimerView: View {
 }
 
 #Preview {
-    let tea = TeaModel(id: 0, name: "Test", category: .oolong, teaType: .Loose, waterAmount: 92, waterTemp: 92, time: 5, url: "https://example.com", description: "test", teaUsedPerBrew: 5, amountStocked: 200 )
+    let tea = TeaModel(id: 0, name: "Test", category: .oolong, teaType: .Loose, waterAmount: 92, waterTemp: 92, time: 5, url: "https://example.com", teaUsedPerBrew: 5, amountStocked: 200 )
     TimerView(tea: tea).environmentObject(TeaDb())
 }
