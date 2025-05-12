@@ -78,7 +78,7 @@ class TimerViewModel: ObservableObject {
         UNUserNotificationCenter.current().add(request)
     }
     
-    // Returns the time as a string in the format mm:ss to display nicely
+    // Returns the time as a string in the format m:ss to display nicely
     func getFormattedTime() -> String{
         return "\(remainingTime / 60):\(String(format: "%02d", remainingTime % 60))"
     }
