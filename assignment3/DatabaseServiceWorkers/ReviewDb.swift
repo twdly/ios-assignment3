@@ -10,6 +10,7 @@ import Foundation
 class ReviewDb: ObservableObject {
     @Published var reviews: [ReviewModel] = []
     
+    // Load the reviews from the Azure web server and returns an error message if something goes wrong
     func loadReviews() async -> String {
         let url = URL(string: "https://teareview-fuaygvbagwfegda8.australiaeast-01.azurewebsites.net/")!
         var request = URLRequest(url: url)
@@ -27,6 +28,8 @@ class ReviewDb: ObservableObject {
         }
     }
     
+    // Post the review in a json format to the review web server
+    // Returns true to represent a success or false to represent a failure
     static func postReview(_ review: ReviewModel) async -> Bool {
         // This URL is a web server used to store and read reviews in json format
         // https://github.com/twdly/tea-reviews

@@ -17,6 +17,7 @@ class TimerViewModel: ObservableObject {
     
     let dotSuffix: [String] = ["", ".", "..", "..."]
     
+    // Initialise the model by checking if a timer is currently running for the selected tea
     func initialiseTimer(tea: TeaModel, teaDb: TeaDb) {
         guard let dictStartTime = teaDb.timerDict[tea.id] else {
             // This timer is not currently running, do nothing
@@ -38,6 +39,7 @@ class TimerViewModel: ObservableObject {
         timerMessage = "Steeping"
     }
     
+    // Begin the timer by updating the timer dictionary and scheduling a notification
     func beginTimer(tea: TeaModel, teaDb: TeaDb) {
         startTime = Date()
         remainingTime = tea.time
@@ -50,6 +52,7 @@ class TimerViewModel: ObservableObject {
         teaDb.brewTea(id: tea.id)
     }
     
+    // Function that runs every second, updates the timer value and "animates" the dots after the "steeping" message
     func onTimer(tea: TeaModel) {
         if remainingTime > 0 {
             remainingTime = tea.time - Int(Date().timeIntervalSince(startTime!))
@@ -61,6 +64,7 @@ class TimerViewModel: ObservableObject {
         }
     }
     
+    // Schedules a notification to be sent when the timer has elapsed
     func schedulateNotification(tea: TeaModel) {
         let notifContent = UNMutableNotificationContent()
         notifContent.title = "Tea time!"
@@ -74,6 +78,7 @@ class TimerViewModel: ObservableObject {
         UNUserNotificationCenter.current().add(request)
     }
     
+    // Returns the time as a string in the format mm:ss to display nicely
     func getFormattedTime() -> String{
         return "\(remainingTime / 60):\(String(format: "%02d", remainingTime % 60))"
     }

@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Enum representing the category of tea for filtering and list sections
 enum TeaCategory: String, Codable, CaseIterable {
     case black
     case green

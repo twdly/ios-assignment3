@@ -8,13 +8,10 @@
 import Foundation
 
 class TimerListViewModel: ObservableObject {
-    @Published var timers: [TeaTimerModel]
+    @Published var timers: [TeaTimerModel] = []
     @Published var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
-    init() {
-        self.timers = []
-    }
-    
+    // Initialise view by getting all currently running timers
     func initialiseTimers(db teaDb: TeaDb) {
         for timer in teaDb.timerDict {
             guard let tea = teaDb.getBy(id: timer.key) else {
@@ -33,6 +30,8 @@ class TimerListViewModel: ObservableObject {
         }
     }
     
+    // Update all timers with the current time
+    // This method gets run every second while the TimerListView is active
     func update() {
         for timerModel in timers {
             timerModel.remainingTime = timerModel.steepingTime - Int(Date().timeIntervalSince(timerModel.startingTime))
