@@ -15,6 +15,7 @@ struct StockItemView: View {
     let onStockChange: (Int) -> Void
     let onSave: () -> Void
 
+    // This is the code for a single tea in the stock list, it has a label shows current stock and allows the editing of the stock
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(tea.name)
@@ -23,6 +24,7 @@ struct StockItemView: View {
             let unit = tea.teaType == .Loose ? "grams" : "bags"
             Text("Stock: \(tea.amountStocked) \(unit)")
 
+            //this buttin toggles showing editing panel for current tea
             Button(isEditing ? "Close" : "Edit stock", action: onEditToggle)
 
             if isEditing {

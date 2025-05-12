@@ -11,6 +11,7 @@ struct StockView: View {
     @EnvironmentObject var teaDb: TeaDb
     @StateObject private var viewModel = StockViewModel()
 
+    //this just lists all the teas (StockItemView )
     var body: some View {
         NavigationStack {
             List {
