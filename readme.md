@@ -26,6 +26,9 @@ GitHub repository available [here](https://github.com/twdly/ios-assignment3)
 - Automatically reduce the amount of tea you have when starting a timer
 - A list of teas you are running low on can be viewed in the stock tab to remind you what teas you might want to restock
 
+  Other responsibilities:
+      - Creating Json database and ensuring smooth implemetation in other features.
+
 ### Reviews - Tai
 - Write reviews for your favourite teas to share them with other users
 - Read reviews from other users to find other teas you may want to try
