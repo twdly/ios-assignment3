@@ -22,7 +22,9 @@ struct TimerListView: View {
                     ForEach(timersViewModel.timers) { timer in
                         TimerListRow(timer: timer)
                     }
-                }.navigationTitle("Timers")
+                }
+                .id(UUID()) // No clue why but this ID fixes the list not being updated properly
+                .navigationTitle("Timers")
             }
         }
         .onAppear(perform: { timersViewModel.initialiseTimers(db: teaDb) })

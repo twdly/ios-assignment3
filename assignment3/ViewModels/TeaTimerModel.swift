@@ -10,11 +10,15 @@ import Foundation
 class TeaTimerModel: Identifiable, ObservableObject {
     let id: Int
     let name: String
+    let startingTime: Date
+    let steepingTime: Int
     @Published var remainingTime: Int
     
-    init(id: Int, name: String, remainingTime: Int) {
+    init(id: Int, name: String, startingTime: Date, steepingTime: Int, remainingTime: Int) {
         self.id = id
         self.name = name
+        self.startingTime = startingTime
+        self.steepingTime = steepingTime
         self.remainingTime = remainingTime
     }
     

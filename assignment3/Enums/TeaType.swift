@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Enum to determine the unit used for the tea (grams or bags)
 enum TeaType: String, Codable, CaseIterable {
     case Bag
     case Loose
