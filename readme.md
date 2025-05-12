@@ -2,6 +2,8 @@
 
 A tea timer made by Delbert, Griffin, Kevin and Tai
 
+GitHub repository available [here](https://github.com/twdly/ios-assignment3)
+
 ## Features
 
 ### Timers - Tai
