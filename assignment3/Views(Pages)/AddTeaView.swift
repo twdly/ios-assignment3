@@ -22,8 +22,13 @@ struct AddTeaView: View {
         NavigationView {
             Form {
                 Section("Tea Details") {
-                    TextField("Name", text: $name)
-
+                    // Tea Name
+                    HStack {
+                        Text("🫖")
+                        TextField("Name", text: $name)
+                    }
+                    
+                    // Tea Category
                     Picker("Tea Category", selection: $selectedType) {
                         ForEach(TeaCategory.allCases, id: \.self) { t in
                             Text(t.rawValue.capitalized).tag(t)
@@ -31,6 +36,7 @@ struct AddTeaView: View {
                     }
                     .pickerStyle(.segmented)
                     
+                    // Tea Type (Bag or Loose)
                     Picker("Tea Type", selection: $teaType) {
                         ForEach(TeaType.allCases, id: \.self) { t in
                             Text(t.rawValue.capitalized).tag(t)
@@ -38,23 +44,42 @@ struct AddTeaView: View {
                     }
                     .pickerStyle(.segmented)
 
-                    TextField("Water Amount (ml)", text: $amountText)
-                        .keyboardType(.numberPad)
-                    TextField("Water Temp (°C)", text: $tempText)
-                        .keyboardType(.numberPad)
-                    TextField("Steep Time (sec)", text: $timeText)
-                        .keyboardType(.numberPad)
-                    TextField("Amount Stocked (grams or bags)", text: $stock)
-                        .keyboardType(.numberPad)
+                    HStack {
+                        Text("💧")
+                        TextField("Water Amount (ml)", text: $amountText)
+                            .keyboardType(.numberPad)
+                    }
+                    HStack {
+                        Text("🌡️")
+                        TextField("Water Temp (°C)", text: $tempText)
+                            .keyboardType(.numberPad)
+                    }
+                    HStack {
+                        Text("⏱️")
+                        TextField("Steep Time (sec)", text: $timeText)
+                            .keyboardType(.numberPad)
+                    }
+                    HStack {
+                        Text("📦")
+                        TextField("Amount Stocked (grams or bags)", text: $stock)
+                            .keyboardType(.numberPad)
+                    }
                 
-                    TextField("Amount used per brew", text: $useAmt)
-                        .keyboardType(.numberPad)
-                    TextField("URL (optional)", text: $urlString)
-                        .keyboardType(.URL)
+                    HStack {
+                        Text("📏")
+                        TextField("Amount used per brew", text: $useAmt)
+                            .keyboardType(.numberPad)
+                    }
+                    HStack {
+                        Text("🔗")
+                        TextField("URL (optional)", text: $urlString)
+                            .keyboardType(.URL)
+                    }
                 }
 
                 Section {
                     Button("Save Tea") {
+                        // Validate numeric inputs before saving
                         guard
                             let amt = Int(amountText),
                             let tmp = Int(tempText),
@@ -63,10 +88,13 @@ struct AddTeaView: View {
                             let useAmt = Int(useAmt)
                         else { return }
                         
+                        // Notify SwiftUI that data will change
                         teaDb.objectWillChange.send()
-
+                        
+                        // Generate a unique ID for the new tea (max existing ID + 1)
                         let nextID = (teaDb.teas.map(\.id).max() ?? -1) + 1
-
+                        
+                        // Create new TeaModel object to store
                         let newTea = TeaModel(
                             id: nextID,
                             name: name,
@@ -80,8 +108,9 @@ struct AddTeaView: View {
                             amountStocked: stockAmt
                             
                         )
+                        // Dismiss the add tea view
                         presentation.wrappedValue.dismiss()
-                        
+                        // Add new tea to the tea database
                         teaDb.addTea(newTea)
                     }
                     .disabled(name.isEmpty)
@@ -91,6 +120,7 @@ struct AddTeaView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
+                        // If user taps "Cancel", close the add view
                         presentation.wrappedValue.dismiss()
                     }
                 }
