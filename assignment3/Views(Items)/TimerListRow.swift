@@ -16,5 +16,5 @@ struct TimerListRow: View {
 }
 
 #Preview {
-    TimerListRow(timer: TeaTimerModel(id: 0, name: "Tea", remainingTime: 92))
+    TimerListRow(timer: TeaTimerModel(id: 0, name: "Tea", startingTime: Date(), steepingTime: 92, remainingTime: 92))
 }
