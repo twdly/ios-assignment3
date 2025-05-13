@@ -1,6 +1,6 @@
 # iOS Assignment 3
 
-A tea timer made by Delbert, Griffin, Kevin and Tai
+A tea timer made by Delbert (Charlie0612), Griffin (GriffinProgramming), Kevin/Tingxuan (YuukiAsuna-520) and Tai (twdly)
 
 GitHub repository available [here](https://github.com/twdly/ios-assignment3)
 
