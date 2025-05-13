@@ -35,7 +35,7 @@ struct TimerView: View {
                     )
                 }
                 if (teaDb.calculateRemainingCups(tea) < 5){
-                    InfoPanelView(title: "Remaining", textColor: .red, imageName: "mug.fill", details: "\(teaDb.calculateRemainingCups(tea)) Cups", width:300)
+                    InfoPanelView(title: "Remaining", textColor: .red, imageName: "mug.fill", details: "\(teaDb.calculateRemainingCups(tea)) Cups", width:320)
                 }else{
                     InfoPanelView(title: "Remaining", textColor: nil, imageName: "mug.fill", details: "\(teaDb.calculateRemainingCups(tea)) Cups", width:320)
                 }
