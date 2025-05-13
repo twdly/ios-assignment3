@@ -34,11 +34,8 @@ struct TimerView: View {
                         width: 140
                     )
                 }
-                if (teaDb.calculateRemainingCups(tea) < 5){
-                    InfoPanelView(title: "Remaining", textColor: .red, imageName: "mug.fill", details: "\(teaDb.calculateRemainingCups(tea)) Cups", width:320)
-                }else{
-                    InfoPanelView(title: "Remaining", textColor: nil, imageName: "mug.fill", details: "\(teaDb.calculateRemainingCups(tea)) Cups", width:320)
-                }
+                
+                InfoPanelView(title: "Remaining", textColor: teaDb.calculateRemainingCups(tea) < 5 ? .red : .primary, imageName: "mug.fill", details: "\(teaDb.calculateRemainingCups(tea)) Cups", width:320)
                
                 Button(action: { timerViewModel.beginTimer(tea: tea, teaDb: teaDb) }) {
                     HStack {
@@ -72,6 +69,6 @@ struct TimerView: View {
 }
 
 #Preview {
-    let tea = TeaModel(id: 0, name: "Test", category: .oolong, teaType: .Loose, waterAmount: 92, waterTemp: 92, time: 5, url: "https://example.com", teaUsedPerBrew: 5, amountStocked: 200 )
+    let tea = TeaModel(id: 0, name: "Test", category: .oolong, teaType: .Loose, waterAmount: 92, waterTemp: 92, time: 5, url: "https://example.com", teaUsedPerBrew: 90, amountStocked: 200 )
     TimerView(tea: tea).environmentObject(TeaDb())
 }
